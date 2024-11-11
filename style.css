@@ -1,4 +1,4 @@
-/* Reset */
+/* Сброс стилей */
 * {
     margin: 0;
     padding: 0;
@@ -12,71 +12,78 @@ body {
     overflow-x: hidden;
 }
 
-/* Hero Section */
-.hero {
+/* Навигация */
+nav {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+nav li {
+    margin: 0 15px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #007aff;
+}
+
+/* Главная секция */
+header {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     text-align: center;
-    padding: 100px 20px;
+    height: 100vh;
     background: linear-gradient(145deg, #e0e0e0, #ffffff);
-    color: #333;
+    padding-top: 60px; /* для учета высоты навигации */
 }
 
-.hero h1 {
+header h1 {
     font-size: 3em;
     margin-bottom: 20px;
 }
 
-.hero p {
+header p {
     font-size: 1.2em;
     max-width: 600px;
 }
 
-.scroll-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #007aff;
-    color: #fff;
-    border-radius: 25px;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-}
-
-.scroll-button:hover {
-    background-color: #005bbb;
-}
-
-/* About Section */
-.about {
+/* Общие стили для секций */
+section {
     padding: 80px 20px;
-    background-color: #f4f4f4;
     text-align: center;
 }
 
-.about h2 {
+section h2 {
     font-size: 2.5em;
     margin-bottom: 20px;
 }
 
-.about p {
+section p {
     font-size: 1.2em;
     max-width: 600px;
     margin: 0 auto;
 }
 
-/* Projects Section */
-.projects {
-    padding: 80px 20px;
-    background-color: #ffffff;
-    text-align: center;
-}
-
-.projects h2 {
-    font-size: 2.5em;
-    margin-bottom: 20px;
-}
-
+/* Секция "Проекты" */
 .project {
     display: flex;
     flex-direction: column;
@@ -106,7 +113,7 @@ body {
     margin: 0 auto 20px;
 }
 
-.button {
+.project-info a {
     display: inline-block;
     padding: 10px 20px;
     background-color: #007aff;
@@ -117,11 +124,21 @@ body {
     transition: background-color 0.3s ease;
 }
 
-.button:hover {
+.project-info a:hover {
     background-color: #005bbb;
 }
 
-/* Footer Section */
+/* Секция "Контакты" */
+#contact a {
+    color: #007aff;
+    text-decoration: none;
+}
+
+#contact a:hover {
+    text-decoration: underline;
+}
+
+/* Подвал */
 footer {
     padding: 40px 20px;
     background-color: #e0e0e0;
@@ -131,13 +148,4 @@ footer {
 
 footer p {
     font-size: 0.9em;
-}
-
-footer a {
-    color: #007aff;
-    text-decoration: none;
-}
-
-footer a:hover {
-    text-decoration: underline;
 }

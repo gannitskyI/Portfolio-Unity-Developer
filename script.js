@@ -1,4 +1,7 @@
-document.querySelector('.scroll-button').addEventListener('click', function (e) {
-    e.preventDefault();
-    document.querySelector('#about').scrollIntoView({ behavior: 'smooth' });
-});
+document.querySelectorAll('nav a').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        document.getElement
+::contentReference[oaicite:1]{index=1}
+ 

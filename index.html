@@ -3,47 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Портфолио Unity Программиста</title>
+    <title>Портфолио Unity-разработчика</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Hero Section -->
-    <section class="hero">
-        <h1>Привет, я Unity Программист</h1>
-        <p>Разрабатываю интерактивные и захватывающие игры с качественным геймплеем и продуманными механиками.</p>
-        <a href="#about" class="scroll-button">Узнать больше</a>
-    </section>
+    <!-- Навигация -->
+    <nav>
+        <ul>
+            <li><a href="#about">Обо мне</a></li>
+            <li><a href="#projects">Проекты</a></li>
+            <li><a href="#contact">Контакты</a></li>
+        </ul>
+    </nav>
 
-    <!-- About Me Section -->
-    <section id="about" class="about">
-        <h2>Обо Мне</h2>
+    <!-- Главная секция -->
+    <header>
+        <h1>Привет, я Unity-разработчик</h1>
+        <p>Создаю интерактивные и увлекательные игры с качественным геймплеем и продуманными механиками.</p>
+    </header>
+
+    <!-- Секция "Обо мне" -->
+    <section id="about">
+        <h2>Обо мне</h2>
         <p>Я специализируюсь на разработке игр с использованием Unity. В моем портфолио есть несколько успешных проектов, нацеленных на качество и захватывающий опыт для игроков.</p>
     </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="projects">
-        <h2>Мои Проекты</h2>
+    <!-- Секция "Проекты" -->
+    <section id="projects">
+        <h2>Мои проекты</h2>
         <div class="project">
             <video controls>
                 <source src="gameplay.mp4" type="video/mp4">
                 Ваш браузер не поддерживает видео.
             </video>
             <div class="project-info">
-                <h3>Название Игры</h3>
-                <p>Краткое описание игры, ее механик и особенности.</p>
-                <a href="https://github.com/your-github" target="_blank" class="button">GitHub</a>
-                <a href="https://game-link.com" target="_blank" class="button">Скачать игру</a>
+                <h3>Название игры</h3>
+                <p>Краткое описание игры, ее механик и особенностей.</p>
+                <a href="https://github.com/your-github" target="_blank">GitHub</a>
+                <a href="https://game-link.com" target="_blank">Скачать игру</a>
             </div>
         </div>
+        <!-- Добавьте дополнительные проекты по аналогии -->
     </section>
 
-    <!-- Footer Section -->
-    <footer>
+    <!-- Секция "Контакты" -->
+    <section id="contact">
+        <h2>Контакты</h2>
         <p>Связаться со мной: <a href="mailto:youremail@example.com">youremail@example.com</a></p>
-        <p>© 2023 Unity Developer. Все права защищены.</p>
+    </section>
+
+    <!-- Подвал -->
+    <footer>
+        <p>© 2024 Unity Developer. Все права защищены.</p>
     </footer>
 
-    <!-- JavaScript for Smooth Scroll -->
+    <!-- JavaScript для плавной прокрутки -->
     <script src="script.js"></script>
 </body>
 </html>
