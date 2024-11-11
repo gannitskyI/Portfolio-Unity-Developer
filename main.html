@@ -1,147 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio</title>
-    <style>
-        /* Основные стили */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #00234e;
-            color: #fff;
-        }
-        
-        .container {
-            max-width: 1200px;
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            align-items: flex-start;
-        }
-        
-        /* Стили левой панели с вкладками */
-        .sidebar {
-            width: 100px;
-            background-color: #003b8e;
-            padding: 10px;
-            box-sizing: border-box;
-        }
+    <title>Заголовок страницы</title>
+    <link rel="stylesheet" href="./styles/style.css">
 
-        .tab-button {
-            background-color: transparent;
-            border: none;
-            cursor: pointer;
-            padding: 10px;
-            color: #fff;
-            font-weight: bold;
-            text-align: center;
-            display: block;
-            width: 100%;
-            transition: background-color 0.3s;
-        }
-
-        .tab-button:hover {
-            background-color: #0055cc;
-        }
-        
-        /* Основная область контента */
-        .content {
-            flex-grow: 1;
-            padding: 20px;
-            box-sizing: border-box;
-            display: flex;
-        }
-
-        .content img, .content video {
-            max-width: 300px;
-            max-height: 300px;
-            margin-right: 20px;
-            border-radius: 8px;
-        }
-        
-        /* Скрытые вкладки */
-        .tab-content {
-            display: none;
-        }
-
-        /* Активная вкладка */
-        .active {
-            display: flex;
-            align-items: flex-start;
-        }
-
-        .content-text {
-            max-width: 800px;
-        }
-    </style>
-</head>
-<body>
-    <h1>Andrey's Portfolio</h1>
-    <div class="container">
-        <!-- Панель вкладок -->
-        <div class="sidebar">
-            <button class="tab-button" onclick="showTab('about')">About Me</button>
-            <button class="tab-button" onclick="showTab('projects')">Projects</button>
-            <button class="tab-button" onclick="showTab('assets')">Game Assets</button>
-            <button class="tab-button" onclick="showTab('contact')">Contact</button>
-        </div>
-
-        <!-- Контент вкладок -->
-        <div class="content">
-            <!-- Описание вкладки "Обо мне" -->
-            <div id="about" class="tab-content active">
-                <img src="path/to/image.png" alt="Andrey's Photo">
-                <div class="content-text">
-                    <h2>About Me</h2>
-                    <p>My name is Andrey and I am a trained <b>Game Developer</b> with <b>7 years of expertise</b> in Unity, C# and Game Development...</p>
-                </div>
-            </div>
-
-            <!-- Вкладка с проектами -->
-            <div id="projects" class="tab-content">
-                <img src="path/to/project-image.png" alt="Project Image">
-                <div class="content-text">
-                    <h2>Client Projects</h2>
-                    <p>Here are some of the client projects I’ve worked on, including game jams and personal passion projects...</p>
-                </div>
-            </div>
-
-            <!-- Вкладка с игровыми ассетами -->
-            <div id="assets" class="tab-content">
-                <img src="path/to/asset-image.png" alt="Game Asset">
-                <div class="content-text">
-                    <h2>Game Assets</h2>
-                    <p>I also enjoy making various <b>Game Assets</b>, from templates to systems and even props and packs...</p>
-                </div>
-            </div>
-
-            <!-- Вкладка с контактной информацией -->
-            <div id="contact" class="tab-content">
-                <img src="path/to/contact-image.png" alt="Contact">
-                <div class="content-text">
-                    <h2>Contact Me</h2>
-                    <p>If you'd like to get in touch, please reach out via email or connect on LinkedIn...</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Функция для переключения вкладок
-        function showTab(tabId) {
-            // Скрываем все вкладки
-            const contents = document.querySelectorAll('.tab-content');
-            contents.forEach(content => content.classList.remove('active'));
-            
-            // Отображаем выбранную вкладку
-            document.getElementById(tabId).classList.add('active');
-        }
-    </script>
-</body>
+    <meta property="og:title" content="Заголовок страницы в OG">
+    <meta property="og:description" content="Описание страницы в OG">
+    <meta property="og:image" content="https://example.com/image.jpg">
+    <meta property="og:url" content="https://example.com/">
+  </head>
+  <body>
+    <header>
+      <h1>Личный сайт</h1>
+      <p>Который сделан на основе готового шаблона</p>
+      <nav>
+        <ul>
+          <li><a href="index.html">Эта страница</a></li>
+          <li><a href="catalog.html">Другая страница</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <article>
+        <section>
+          <h2>Первая секция</h2>
+          <p>Она обо мне</p>
+          <img src="images/image.png" alt="Человек и пароход">
+          <p>Но может быть и о семантике, я пока не решил.</p>
+        </section>
+        <section>
+          <h2>Вторая секция</h2>
+          <p>Она тоже обо мне</p>
+        </section>
+        <section>
+          <h2>И третья</h2>
+          <p>Вы уже должны были начать догадываться.</p>
+        </section>
+      </article>
+    </main>
+    <footer>
+      <p>Сюда бы я вписал информацию об авторе и ссылки на другие сайты</p>
+    </footer>
+    <!-- сюда можно подключить jquery <script src="scripts/app.js" defer></script> -->
+  </body>
 </html>
