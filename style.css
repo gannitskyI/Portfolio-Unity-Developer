@@ -1,4 +1,3 @@
-/* Сброс стилей */
 * {
     margin: 0;
     padding: 0;
@@ -6,146 +5,68 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    color: #333;
-    background-color: #f9f9f9;
-    overflow-x: hidden;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
 }
 
-/* Навигация */
-nav {
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 1000;
+header {
+    background: #333;
+    color: #fff;
+    padding: 10px 20px;
+    text-align: center;
 }
 
-nav ul {
+header ul {
     list-style: none;
     display: flex;
     justify-content: center;
-    padding: 10px 0;
 }
 
-nav li {
+header ul li {
     margin: 0 15px;
 }
 
-nav a {
+header ul li a {
+    color: #fff;
     text-decoration: none;
-    color: #333;
-    font-weight: bold;
-    transition: color 0.3s;
 }
 
-nav a:hover {
-    color: #007aff;
+.section {
+    padding: 50px 20px;
+    text-align: center;
 }
 
-/* Главная секция */
-header {
+#portfolio .portfolio-item {
+    display: inline-block;
+    margin: 20px;
+    width: 200px;
+}
+
+#portfolio .portfolio-item img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+form {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    height: 100vh;
-    background: linear-gradient(145deg, #e0e0e0, #ffffff);
-    padding-top: 60px; /* для учета высоты навигации */
-}
-
-header h1 {
-    font-size: 3em;
-    margin-bottom: 20px;
-}
-
-header p {
-    font-size: 1.2em;
-    max-width: 600px;
-}
-
-/* Общие стили для секций */
-section {
-    padding: 80px 20px;
-    text-align: center;
-}
-
-section h2 {
-    font-size: 2.5em;
-    margin-bottom: 20px;
-}
-
-section p {
-    font-size: 1.2em;
-    max-width: 600px;
+    max-width: 400px;
     margin: 0 auto;
 }
 
-/* Секция "Проекты" */
-.project {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 40px;
-    transition: transform 0.3s ease;
+form label {
+    margin: 10px 0 5px;
 }
 
-.project video {
-    max-width: 100%;
-    border-radius: 15px;
-    margin-bottom: 20px;
-}
-
-.project-info {
-    text-align: center;
-}
-
-.project-info h3 {
-    font-size: 1.8em;
+form input, form textarea, form button {
+    padding: 10px;
+    font-size: 1em;
     margin-bottom: 10px;
 }
 
-.project-info p {
-    font-size: 1em;
-    max-width: 600px;
-    margin: 0 auto 20px;
-}
-
-.project-info a {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #007aff;
-    color: #fff;
-    border-radius: 25px;
-    text-decoration: none;
-    margin: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.project-info a:hover {
-    background-color: #005bbb;
-}
-
-/* Секция "Контакты" */
-#contact a {
-    color: #007aff;
-    text-decoration: none;
-}
-
-#contact a:hover {
-    text-decoration: underline;
-}
-
-/* Подвал */
-footer {
-    padding: 40px 20px;
-    background-color: #e0e0e0;
-    text-align: center;
-    color: #666;
-}
-
-footer p {
-    font-size: 0.9em;
+form button {
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
 }

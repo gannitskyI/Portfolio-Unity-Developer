@@ -1,63 +1,59 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Портфолио Unity-разработчика</title>
+    <title>My Portfolio</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Навигация -->
-    <nav>
-        <ul>
-            <li><a href="#about">Обо мне</a></li>
-            <li><a href="#projects">Проекты</a></li>
-            <li><a href="#contact">Контакты</a></li>
-        </ul>
-    </nav>
-
-    <!-- Главная секция -->
+    <!-- Header -->
     <header>
-        <h1>Привет, я Unity-разработчик</h1>
-        <p>Создаю интерактивные и увлекательные игры с качественным геймплеем и продуманными механиками.</p>
+        <nav>
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <!-- Секция "Обо мне" -->
-    <section id="about">
-        <h2>Обо мне</h2>
-        <p>Я специализируюсь на разработке игр с использованием Unity. В моем портфолио есть несколько успешных проектов, нацеленных на качество и захватывающий опыт для игроков.</p>
+    <!-- Main Sections -->
+    <section id="about" class="section">
+        <h1>About Me</h1>
+        <p>This is a brief introduction about me.</p>
     </section>
 
-    <!-- Секция "Проекты" -->
-    <section id="projects">
-        <h2>Мои проекты</h2>
-        <div class="project">
-            <video controls>
-                <source src="gameplay.mp4" type="video/mp4">
-                Ваш браузер не поддерживает видео.
-            </video>
-            <div class="project-info">
-                <h3>Название игры</h3>
-                <p>Краткое описание игры, ее механик и особенностей.</p>
-                <a href="https://github.com/your-github" target="_blank">GitHub</a>
-                <a href="https://game-link.com" target="_blank">Скачать игру</a>
-            </div>
+    <section id="portfolio" class="section">
+        <h1>My Portfolio</h1>
+        <div class="portfolio-item">
+            <img src="project1.jpg" alt="Project 1">
+            <h2>Project 1</h2>
+            <p>Details about the project.</p>
         </div>
-        <!-- Добавьте дополнительные проекты по аналогии -->
+        <div class="portfolio-item">
+            <img src="project2.jpg" alt="Project 2">
+            <h2>Project 2</h2>
+            <p>Details about the project.</p>
+        </div>
     </section>
 
-    <!-- Секция "Контакты" -->
-    <section id="contact">
-        <h2>Контакты</h2>
-        <p>Связаться со мной: <a href="mailto:youremail@example.com">youremail@example.com</a></p>
+    <section id="contact" class="section">
+        <h1>Contact</h1>
+        <form>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name">
+            
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email">
+            
+            <label for="message">Message</label>
+            <textarea id="message" name="message"></textarea>
+            
+            <button type="submit">Send</button>
+        </form>
     </section>
 
-    <!-- Подвал -->
-    <footer>
-        <p>© 2024 Unity Developer. Все права защищены.</p>
-    </footer>
-
-    <!-- JavaScript для плавной прокрутки -->
     <script src="script.js"></script>
 </body>
 </html>
