@@ -45,9 +45,8 @@ body, html {
     color: #5c6bc0;
 }
 
-/* Главная секция с параллакс эффектом */
 .hero {
-    background: url('path/to/hero-image.jpg') center/cover no-repeat fixed;
+    background: url('images/hero-image.jpg') center/cover no-repeat fixed;
     height: 100vh;
     color: #fff;
     display: flex;
@@ -55,6 +54,7 @@ body, html {
     justify-content: center;
     text-align: center;
 }
+
 
 .hero-content {
     max-width: 600px;
