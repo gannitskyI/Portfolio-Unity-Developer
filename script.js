@@ -1,9 +1,9 @@
-// Функция для отображения секций с плавной анимацией
+// Плавное появление секций при прокрутке
 function revealSections() {
-    const sections = document.querySelectorAll('.about, .projects');
+    const sections = document.querySelectorAll('.about, .projects, .contact');
     sections.forEach(section => {
         const sectionTop = section.getBoundingClientRect().top;
-        const triggerPoint = window.innerHeight / 1.3;
+        const triggerPoint = window.innerHeight / 1.2;
         if (sectionTop < triggerPoint) {
             section.style.opacity = '1';
             section.style.transform = 'translateY(0)';
@@ -11,6 +11,6 @@ function revealSections() {
     });
 }
 
-// Вызов функции при прокрутке страницы
+// Вызов анимации при прокрутке и загрузке страницы
 window.addEventListener('scroll', revealSections);
 window.addEventListener('load', revealSections);
