@@ -11,7 +11,8 @@ const CONFIG = window.CONFIG = {
     ru: "Разработчик игр на Unity и C# с упором на WebGL: собираю цельный геймплей для браузера и мобильных платформ.",
   },
 
-  email: "ganniczky@yandex.ru",
+  email: "ganniczky@gmail.com",
+  telegramHandle: "@gannitsky",
 
   social: {
     github: "https://github.com/gannitskyI",
