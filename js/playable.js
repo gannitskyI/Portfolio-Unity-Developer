@@ -283,6 +283,7 @@ const Playable = (() => {
       const dt = Math.min(0.033, (now - last) / 1000);
       last = now;
       update(dt);
+      if (session.stopped) return;
       session.raf = requestAnimationFrame(tick);
     };
     session.raf = requestAnimationFrame(tick);
@@ -456,7 +457,7 @@ const Playable = (() => {
   function startKnight(session) {
     session.help.textContent = t("play.knightHint");
     const TILE = 36;
-    let map, player, enemies, coins, slash, wave, best, iFrames;
+    let map, player, enemies, coins, slash, wave, best, waveCleared;
 
     const carve = (cols, rows) => {
       const grid = Array.from({ length: rows }, () => Array(cols).fill(1));
@@ -514,6 +515,7 @@ const Playable = (() => {
           if (!blocked(x, y)) enemies.push({ x, y, hp: 2 });
         });
       }
+      waveCleared = false;
       for (let i = 0; i < 5; i += 1) {
         let x;
         let y;
@@ -537,10 +539,10 @@ const Playable = (() => {
         facing: 0,
         cool: 0,
         hurt: 0,
+        safeUntil: performance.now() + 8000,
       };
       slash = null;
       wave = 1;
-      iFrames = 2.5;
       spawnWave(1);
       session.hud.textContent = `${t("play.wave")} 1`;
     };
@@ -578,6 +580,7 @@ const Playable = (() => {
           if (dist < 54 && diff < 0.9) enemy.hp -= 1;
         });
         enemies = enemies.filter((enemy) => enemy.hp > 0);
+        if (enemies.length === 0) waveCleared = true;
       }
       if (slash) {
         slash.t -= dt;
@@ -594,13 +597,16 @@ const Playable = (() => {
         if (!blocked(enemy.x, ny)) enemy.y = ny;
       });
 
-      iFrames = Math.max(0, iFrames - dt);
       player.hurt = Math.max(0, player.hurt - dt);
-      if (iFrames <= 0 && player.hurt <= 0) {
-        const touching = enemies.some((enemy) => Math.hypot(enemy.x - player.x, enemy.y - player.y) < 22);
-        if (touching) {
+      const safe = performance.now() < player.safeUntil;
+      if (!safe && player.hurt <= 0) {
+        const hitting = enemies.find((enemy) => Math.hypot(enemy.x - player.x, enemy.y - player.y) < 22);
+        if (hitting) {
           player.hp -= 1;
-          player.hurt = 0.7;
+          player.hurt = 1.1;
+          const ang = Math.atan2(player.y - hitting.y, player.x - hitting.x);
+          player.x += Math.cos(ang) * 28;
+          player.y += Math.sin(ang) * 28;
         }
       }
 
@@ -612,10 +618,10 @@ const Playable = (() => {
         return true;
       });
 
-      if (enemies.length === 0 && player.hp > 0) {
+      if (enemies.length === 0 && player.hp > 0 && waveCleared) {
         wave += 1;
         player.hp = Math.min(8, player.hp + 1);
-        iFrames = 1.8;
+        player.safeUntil = performance.now() + 2500;
         spawnWave(wave);
       }
 
@@ -660,7 +666,7 @@ const Playable = (() => {
           ctx.arc(player.x, player.y, 40, slash.a - 0.8, slash.a + 0.8);
           ctx.stroke();
         }
-        ctx.fillStyle = iFrames > 0 && Math.floor(iFrames * 8) % 2 === 0 ? "#f1ece3" : "#d4b07a";
+        ctx.fillStyle = performance.now() < player.safeUntil && Math.floor(performance.now() / 120) % 2 === 0 ? "#f1ece3" : "#d4b07a";
         ctx.beginPath();
         ctx.arc(player.x, player.y, 11, 0, Math.PI * 2);
         ctx.fill();
