@@ -97,8 +97,8 @@ const CONFIG = window.CONFIG = {
           ru: "Более 3 лет разработки на Unity / C# для браузера и мобильных платформ.",
         },
         {
-          en: "Shipped WebGL games for Yandex Games, including racing and action titles.",
-          ru: "Выпускал WebGL-игры для Яндекс Игр, включая гонки и экшен.",
+          en: "Shipped WebGL games for Yandex Games as GannaGames — Phantom Rivals (ghost racing) and Knight Souls (dungeon action).",
+          ru: "Выпускал WebGL-игры для Яндекс Игр как GannaGames — Phantom Rivals (гонка с призраком) и Knight Souls (данжен-экшен).",
         },
         {
           en: "Built gameplay systems, UI, optimization and SDK integrations end-to-end.",

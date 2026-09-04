@@ -1163,6 +1163,58 @@ body::before {
   gap: 1.5rem;
 }
 
+.project__repo {
+  margin: 0 0 1.8rem;
+  padding: 1.1rem 1.15rem;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(241, 236, 227, 0.03);
+}
+
+.project__repo h3 {
+  font-size: 0.78rem;
+  font-family: var(--mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0 0 0.85rem;
+}
+
+.project__repo dl {
+  margin: 0;
+  display: grid;
+  gap: 0.55rem 1.2rem;
+}
+
+.project__repo dl div {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: 0.6rem;
+  align-items: baseline;
+}
+
+.project__repo dt {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.project__repo dd {
+  margin: 0;
+  color: var(--text);
+}
+
+.project__repo a {
+  color: var(--cyan);
+  text-decoration: none;
+}
+
+.project__repo a:hover {
+  color: var(--gold-2);
+}
+
 .project__grid h3,
 .project__content > h3 {
   font-size: 0.78rem;
@@ -1331,6 +1383,11 @@ body.project-open {
 
   .shots {
     grid-template-columns: 1fr;
+  }
+
+  .project__repo dl div {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
   }
 
   .game-card__desc,

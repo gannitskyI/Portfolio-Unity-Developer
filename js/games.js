@@ -14,6 +14,9 @@ function renderGames(games) {
     .map((game) => {
       const categories = (game.categories || []).join(",");
       const platforms = (game.platforms || []).join(" · ");
+      const meta = [loc(game.genre), game.repo && game.repo.unity, platforms]
+        .filter(Boolean)
+        .join(" · ");
       const tech = (game.technologies || [])
         .slice(0, 4)
         .map((item) => `<span class="chip">${escapeHtml(item)}</span>`)
@@ -39,7 +42,7 @@ function renderGames(games) {
               ${featured}
             </div>
             <h3>${escapeHtml(game.title)}</h3>
-            <p class="game-card__meta">${escapeHtml(loc(game.genre) || "")} · ${escapeHtml(platforms)}</p>
+            <p class="game-card__meta">${escapeHtml(meta)}</p>
             <p class="game-card__desc">${escapeHtml(loc(game.description))}</p>
             <div class="game-card__tech">${tech}</div>
             <span class="game-card__cta">${escapeHtml(cta)}</span>

@@ -39,6 +39,19 @@ function openProject(slug) {
     : "";
 
   const playNote = game.play?.type === "embed" ? t("project.embed") : t("project.prototype");
+  const repo = game.repo || {};
+  const repoFacts = repo.product
+    ? `<div class="project__repo">
+        <h3>${escapeHtml(t("project.repo"))}</h3>
+        <dl>
+          <div><dt>${escapeHtml(t("project.product"))}</dt><dd>${escapeHtml(repo.product)}</dd></div>
+          <div><dt>${escapeHtml(t("project.studio"))}</dt><dd>${escapeHtml(repo.studio || "GannaGames")}</dd></div>
+          <div><dt>${escapeHtml(t("project.unity"))}</dt><dd>${escapeHtml(repo.unity || "")}</dd></div>
+          <div><dt>${escapeHtml(t("project.version"))}</dt><dd>${escapeHtml(repo.version || "")}</dd></div>
+          <div><dt>${escapeHtml(t("project.githubRepo"))}</dt><dd><a href="${escapeHtml(links.github || "#")}" target="_blank" rel="noopener">${escapeHtml(repo.github || "")}</a></dd></div>
+        </dl>
+      </div>`
+    : "";
 
   body.innerHTML = `
     <div class="project__play" id="project-play-root"></div>
@@ -53,6 +66,7 @@ function openProject(slug) {
       <p>${escapeHtml(loc(game.longDescription || game.description))}</p>
       <p class="project__note">${escapeHtml(playNote)}</p>
       <div class="project__actions">${actions}</div>
+      ${repoFacts}
       <div class="project__grid">
         <div>
           <h3>${escapeHtml(t("project.role"))}</h3>

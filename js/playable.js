@@ -622,7 +622,7 @@ const Playable = (() => {
       if (enemies.length === 0 && player.hp > 0 && waveCleared) {
         wave += 1;
         player.hp = Math.min(8, player.hp + 1);
-        player.safeUntil = performance.now() + 2500;
+        player.safeUntil = Math.max(player.safeUntil, performance.now() + 2500);
         spawnWave(wave);
       }
 
