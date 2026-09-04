@@ -487,18 +487,32 @@ const Playable = (() => {
       coins = [];
       const cols = map[0].length;
       const rows = map.length;
-      const count = 3 + index * 2;
-      const minDist = Math.min(session.w, session.h) * 0.38;
+      const count = 2 + index;
+      const minDist = Math.min(session.w, session.h) * 0.42;
       for (let i = 0; i < count; i += 1) {
-        let x;
-        let y;
-        let tries = 0;
-        do {
+        let x = 0;
+        let y = 0;
+        let placed = false;
+        for (let tries = 0; tries < 50; tries += 1) {
           x = (1 + Math.random() * (cols - 2)) * TILE + TILE / 2;
           y = (1 + Math.random() * (rows - 2)) * TILE + TILE / 2;
-          tries += 1;
-        } while ((blocked(x, y) || Math.hypot(x - player.x, y - player.y) < minDist) && tries < 40);
-        enemies.push({ x, y, hp: 2 + Math.floor(index / 2) });
+          if (!blocked(x, y) && Math.hypot(x - player.x, y - player.y) >= minDist) {
+            placed = true;
+            break;
+          }
+        }
+        if (placed) enemies.push({ x, y, hp: 2 + Math.floor(index / 2) });
+      }
+      if (enemies.length === 0) {
+        const corners = [
+          [TILE * 1.5, TILE * 1.5],
+          [(cols - 1.5) * TILE, TILE * 1.5],
+          [TILE * 1.5, (rows - 1.5) * TILE],
+          [(cols - 1.5) * TILE, (rows - 1.5) * TILE],
+        ];
+        corners.forEach(([x, y]) => {
+          if (!blocked(x, y)) enemies.push({ x, y, hp: 2 });
+        });
       }
       for (let i = 0; i < 5; i += 1) {
         let x;
@@ -518,14 +532,15 @@ const Playable = (() => {
       player = {
         x: (cols / 2) * TILE,
         y: (rows / 2) * TILE,
-        hp: 5,
+        hp: 8,
         coins: 0,
         facing: 0,
         cool: 0,
+        hurt: 0,
       };
       slash = null;
       wave = 1;
-      iFrames = 1.6;
+      iFrames = 2.5;
       spawnWave(1);
       session.hud.textContent = `${t("play.wave")} 1`;
     };
@@ -573,16 +588,20 @@ const Playable = (() => {
         const dx = player.x - enemy.x;
         const dy = player.y - enemy.y;
         const dist = Math.hypot(dx, dy) || 1;
-        const nx = enemy.x + (dx / dist) * 70 * dt;
-        const ny = enemy.y + (dy / dist) * 70 * dt;
+        const nx = enemy.x + (dx / dist) * 48 * dt;
+        const ny = enemy.y + (dy / dist) * 48 * dt;
         if (!blocked(nx, enemy.y)) enemy.x = nx;
         if (!blocked(enemy.x, ny)) enemy.y = ny;
       });
 
       iFrames = Math.max(0, iFrames - dt);
-      if (iFrames <= 0) {
+      player.hurt = Math.max(0, player.hurt - dt);
+      if (iFrames <= 0 && player.hurt <= 0) {
         const touching = enemies.some((enemy) => Math.hypot(enemy.x - player.x, enemy.y - player.y) < 22);
-        if (touching) player.hp -= dt * 0.7;
+        if (touching) {
+          player.hp -= 1;
+          player.hurt = 0.7;
+        }
       }
 
       coins = coins.filter((coin) => {
@@ -595,8 +614,8 @@ const Playable = (() => {
 
       if (enemies.length === 0 && player.hp > 0) {
         wave += 1;
-        player.hp = Math.min(5, player.hp + 1);
-        iFrames = 1.2;
+        player.hp = Math.min(8, player.hp + 1);
+        iFrames = 1.8;
         spawnWave(wave);
       }
 
