@@ -50,21 +50,12 @@ const Playable = (() => {
         <div class="play-stage__hud"></div>
         <div class="play-stage__overlay"></div>
       </div>
-      <p class="play-stage__help"></p>
-      <div class="play-stage__touch play-stage__touch--hidden">
-        <div class="play-stick" data-stick>
-          <span></span>
-        </div>
-        <button class="play-action" type="button" data-action>ATK</button>
-      </div>
     `;
     container.appendChild(wrap);
 
     const media = wrap.querySelector(".play-stage__media");
     const hud = wrap.querySelector(".play-stage__hud");
     const overlay = wrap.querySelector(".play-stage__overlay");
-    const help = wrap.querySelector(".play-stage__help");
-    const touch = wrap.querySelector(".play-stage__touch");
     const keys = { up: false, down: false, left: false, right: false, action: false, ax: 0, ay: 0 };
 
     const session = {
@@ -72,8 +63,7 @@ const Playable = (() => {
       media,
       hud,
       overlay,
-      help,
-      touch,
+      help: document.getElementById("play-theater-hint"),
       keys,
       game,
       stopped: false,
@@ -84,14 +74,7 @@ const Playable = (() => {
     };
     active = session;
 
-    const isTouch = window.matchMedia("(pointer: coarse)").matches;
-    if (isTouch && game.play.type === "canvas") {
-      touch.classList.remove("play-stage__touch--hidden");
-    } else {
-      touch.classList.add("play-stage__touch--hidden");
-    }
-
-    bindInput(session);
+    bindKeys(session);
 
     if (game.play.type === "embed") {
       setupEmbed(session);
@@ -103,27 +86,40 @@ const Playable = (() => {
   function start() {
     if (!active) return;
     const btn = active.overlay.querySelector("[data-start]");
-    btn?.click();
+    if (btn) {
+      btn.click();
+      return;
+    }
+    active.startFn?.();
   }
 
-  function bindInput(session) {
-    const { keys, wrap, touch } = session;
+  function bindKeys(session) {
+    const { keys, wrap } = session;
     const onDown = (event) => mapKey(event.code, true, keys, event);
     const onUp = (event) => mapKey(event.code, false, keys, event);
     window.addEventListener("keydown", onDown);
     window.addEventListener("keyup", onUp);
+    session.cleanup = () => {
+      window.removeEventListener("keydown", onDown);
+      window.removeEventListener("keyup", onUp);
+      wrap.remove();
+    };
+  }
 
-    const stick = touch.querySelector("[data-stick]");
-    const action = touch.querySelector("[data-action]");
+  function bindCanvasPointer(session) {
+    const canvas = session.canvas;
+    const keys = session.keys;
+    if (!canvas) return;
     let pointerId = null;
+    let origin = null;
+    let moved = false;
+    let tapTimer = 0;
 
-    const setStick = (clientX, clientY) => {
-      const rect = stick.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-      let dx = (clientX - cx) / (rect.width / 2);
-      let dy = (clientY - cy) / (rect.height / 2);
-      const len = Math.hypot(dx, dy) || 1;
+    const apply = (clientX, clientY) => {
+      let dx = (clientX - origin.x) / 56;
+      let dy = (clientY - origin.y) / 56;
+      const len = Math.hypot(dx, dy);
+      if (len > 0.14) moved = true;
       if (len > 1) {
         dx /= len;
         dy /= len;
@@ -134,42 +130,43 @@ const Playable = (() => {
       keys.right = dx > 0.3;
       keys.up = dy < -0.3;
       keys.down = dy > 0.3;
-      const knob = stick.querySelector("span");
-      knob.style.transform = `translate(${dx * 18}px, ${dy * 18}px)`;
     };
 
-    const endStick = () => {
-      pointerId = null;
+    const resetAxis = () => {
       keys.ax = keys.ay = 0;
       keys.left = keys.right = keys.up = keys.down = false;
-      stick.querySelector("span").style.transform = "";
     };
 
-    stick.addEventListener("pointerdown", (event) => {
+    canvas.addEventListener("pointerdown", (event) => {
       pointerId = event.pointerId;
-      stick.setPointerCapture(event.pointerId);
-      setStick(event.clientX, event.clientY);
+      canvas.setPointerCapture(event.pointerId);
+      origin = { x: event.clientX, y: event.clientY };
+      moved = false;
+      apply(event.clientX, event.clientY);
     });
-    stick.addEventListener("pointermove", (event) => {
-      if (event.pointerId === pointerId) setStick(event.clientX, event.clientY);
+    canvas.addEventListener("pointermove", (event) => {
+      if (event.pointerId === pointerId && origin) apply(event.clientX, event.clientY);
     });
-    stick.addEventListener("pointerup", endStick);
-    stick.addEventListener("pointercancel", endStick);
-
-    const press = (value) => {
-      keys.action = value;
+    const endPointer = (event) => {
+      if (pointerId != null && event.pointerId !== pointerId) return;
+      pointerId = null;
+      origin = null;
+      resetAxis();
+      if (!moved) {
+        keys.action = true;
+        window.clearTimeout(tapTimer);
+        tapTimer = window.setTimeout(() => {
+          keys.action = false;
+        }, 140);
+      }
     };
-    action.addEventListener("pointerdown", (event) => {
-      event.preventDefault();
-      press(true);
-    });
-    action.addEventListener("pointerup", () => press(false));
-    action.addEventListener("pointercancel", () => press(false));
+    canvas.addEventListener("pointerup", endPointer);
+    canvas.addEventListener("pointercancel", endPointer);
 
+    const prevCleanup = session.cleanup;
     session.cleanup = () => {
-      window.removeEventListener("keydown", onDown);
-      window.removeEventListener("keyup", onUp);
-      wrap.remove();
+      window.clearTimeout(tapTimer);
+      prevCleanup();
     };
   }
 
@@ -225,14 +222,12 @@ const Playable = (() => {
     const play = session.game.play || {};
     const src = play.src;
     const hintKey = play.hint || "play.warHint";
-    const portrait = play.orientation === "portrait";
-    session.help.textContent = t(hintKey);
+    if (session.help) session.help.textContent = t(hintKey);
     session.overlay.innerHTML = "";
     session.overlay.hidden = true;
-    if (portrait) session.wrap.classList.add("play-stage--portrait");
     session.media.innerHTML = `
       <iframe
-        class="play-stage__iframe${portrait ? " play-stage__iframe--portrait" : ""}"
+        class="play-stage__iframe"
         title="${escapeHtml(session.game.title)}"
         src="${escapeHtml(src)}"
         allow="autoplay; fullscreen; gamepad; keyboard-map"
@@ -240,11 +235,7 @@ const Playable = (() => {
         loading="eager"
       ></iframe>
     `;
-    if (portrait) {
-      session.hud.hidden = true;
-    } else {
-      session.hud.textContent = session.game.title;
-    }
+    session.hud.hidden = true;
   }
 
   function setupCanvas(session) {
@@ -255,6 +246,7 @@ const Playable = (() => {
     session.canvas = canvas;
     session.ctx = canvas.getContext("2d");
     resizeCanvas(session);
+    bindCanvasPointer(session);
     const onResize = () => resizeCanvas(session);
     window.addEventListener("resize", onResize);
     const prevCleanup = session.cleanup;
@@ -277,8 +269,8 @@ const Playable = (() => {
     if (!canvas) return;
     const rect = canvas.parentElement.getBoundingClientRect();
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const w = Math.max(320, Math.floor(rect.width));
-    const h = Math.max(240, Math.floor(rect.width * 0.56));
+    const w = Math.max(280, Math.floor(rect.width));
+    const h = Math.max(220, Math.floor(rect.height || rect.width * 0.56));
     canvas.width = Math.floor(w * dpr);
     canvas.height = Math.floor(h * dpr);
     canvas.style.width = `${w}px`;
@@ -317,7 +309,7 @@ const Playable = (() => {
   }
 
   function startPhantom(session) {
-    session.help.textContent = t("play.phantomHint");
+    if (session.help) session.help.textContent = t("play.phantomHint");
     const car = { x: 0, y: 0, a: -Math.PI / 2, v: 0 };
     let ghost = [];
     let record = [];
@@ -467,7 +459,7 @@ const Playable = (() => {
   }
 
   function startKnight(session) {
-    session.help.textContent = t("play.knightHint");
+    if (session.help) session.help.textContent = t("play.knightHint");
     const TILE = 36;
     let map, player, enemies, coins, slash, wave, best, waveCleared;
 
@@ -718,7 +710,7 @@ const Playable = (() => {
   }
 
   function startPoker(session) {
-    session.help.textContent = t("play.pokerHint");
+    if (session.help) session.help.textContent = t("play.pokerHint");
     let player, enemies, bullets, pickups, cards, fire, time, wave;
 
     const begin = () => {
