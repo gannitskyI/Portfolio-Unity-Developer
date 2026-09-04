@@ -105,13 +105,14 @@ function renderContact() {
   const root = document.getElementById("contact-actions");
   if (!root) return;
   const social = CONFIG.social || {};
+  const handle = CONFIG.telegramHandle || "@gannitsky";
   const items = [];
 
   if (CONFIG.email) {
-    items.push(`<a class="btn btn--primary" href="mailto:${escapeHtml(CONFIG.email)}">${icon("mail")} ${escapeHtml(t("contact.email"))}</a>`);
+    items.push(`<a class="btn btn--primary" href="mailto:${escapeHtml(CONFIG.email)}">${icon("mail")} ${escapeHtml(CONFIG.email)}</a>`);
   }
   if (social.telegram) {
-    items.push(`<a class="btn btn--ghost" href="${escapeHtml(social.telegram)}" target="_blank" rel="noopener">${icon("telegram")} Telegram</a>`);
+    items.push(`<a class="btn btn--ghost" href="${escapeHtml(social.telegram)}" target="_blank" rel="noopener">${icon("telegram")} ${escapeHtml(handle)}</a>`);
   }
   if (social.github) {
     items.push(`<a class="btn btn--ghost" href="${escapeHtml(social.github)}" target="_blank" rel="noopener">${icon("github")} GitHub</a>`);
@@ -132,6 +133,22 @@ function renderContact() {
   root.innerHTML = items.join("");
 }
 
+function renderAboutLinks() {
+  const root = document.getElementById("about-links");
+  if (!root) return;
+  const social = CONFIG.social || {};
+  const handle = CONFIG.telegramHandle || "@gannitsky";
+  const items = [];
+
+  if (social.telegram) {
+    items.push(`<a href="${escapeHtml(social.telegram)}" target="_blank" rel="noopener">${icon("telegram")} ${escapeHtml(handle)}</a>`);
+  }
+  if (CONFIG.email) {
+    items.push(`<a href="mailto:${escapeHtml(CONFIG.email)}">${icon("mail")} ${escapeHtml(CONFIG.email)}</a>`);
+  }
+  root.innerHTML = items.join("");
+}
+
 function initLang() {
   document.querySelectorAll(".lang__btn").forEach((button) => {
     button.addEventListener("click", () => setLang(button.dataset.lang));
@@ -147,6 +164,7 @@ function refreshContent() {
   renderSkills();
   renderExperience();
   renderContact();
+  renderAboutLinks();
   initFilters();
   document.querySelectorAll(".game-card").forEach((node) => {
     node.classList.add("reveal", "is-in");
@@ -235,6 +253,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderSkills();
   renderExperience();
   renderContact();
+  renderAboutLinks();
   initLang();
   initFilters();
   initProject();
