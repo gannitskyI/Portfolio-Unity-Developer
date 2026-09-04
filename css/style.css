@@ -122,6 +122,23 @@ h2 {
   transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
 }
 
+.btn svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+body::before {
+  content: "";
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.9'/%3E%3C/svg%3E");
+}
+
 .btn--primary {
   background: var(--gold);
   color: #16130e;
@@ -204,9 +221,12 @@ h2 {
   position: relative;
 }
 
-.nav__links a:hover,
-.nav__links a.is-active {
+.nav__links a:hover {
   color: var(--text);
+}
+
+.nav__links a.is-active {
+  color: var(--gold-2);
 }
 
 .nav__links a::after {
@@ -309,11 +329,11 @@ h2 {
 
 .hero__hud {
   position: absolute;
-  inset: 1.2rem;
+  inset: 1.6rem;
   font-family: var(--mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.14em;
-  color: var(--faint);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  color: rgba(154, 148, 138, 0.55);
 }
 
 .hero__hud span:nth-child(1) { position: absolute; top: 0; left: 0; }
@@ -321,29 +341,22 @@ h2 {
 .hero__hud span:nth-child(3) { position: absolute; bottom: 0; left: 0; }
 .hero__hud span:nth-child(4) { position: absolute; bottom: 0; right: 0; }
 
-.hero__cube {
+.hero__frame {
   position: absolute;
-  right: 8%;
-  top: 28%;
-  width: 72px;
-  height: 72px;
-  border: 1px solid rgba(126, 200, 196, 0.45);
-  transform: rotate(18deg);
-  animation: cubeFloat 7s ease-in-out infinite;
+  inset: 0.8rem;
 }
 
-.hero__cube::before,
-.hero__cube::after {
-  content: "";
+.hero__frame i {
   position: absolute;
-  inset: 10px;
-  border: 1px solid rgba(212, 176, 122, 0.35);
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(212, 176, 122, 0.45);
 }
 
-.hero__cube::after {
-  inset: 22px;
-  border-color: rgba(126, 200, 196, 0.5);
-}
+.hero__frame i:nth-child(1) { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+.hero__frame i:nth-child(2) { top: 0; right: 0; border-left: 0; border-bottom: 0; }
+.hero__frame i:nth-child(3) { bottom: 0; left: 0; border-right: 0; border-top: 0; }
+.hero__frame i:nth-child(4) { bottom: 0; right: 0; border-left: 0; border-top: 0; }
 
 .hero__content {
   position: relative;
@@ -352,15 +365,24 @@ h2 {
   text-align: center;
 }
 
+.hero__title {
+  margin: 0;
+}
+
 .hero__name {
   display: block;
-  font-size: clamp(3rem, 10vw, 7.4rem);
+  font-size: clamp(2.6rem, 7.2vw, 5.6rem);
   font-weight: 800;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
   background: linear-gradient(180deg, #fff8ee 20%, #d4b07a 140%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+.hero__name span {
+  display: block;
 }
 
 .hero__role {
@@ -399,6 +421,21 @@ h2 {
   flex-wrap: wrap;
   gap: 0.55rem;
   margin-bottom: 2rem;
+}
+
+@media (max-width: 767px) {
+  .filters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.4rem;
+    margin-right: -1.2rem;
+    padding-right: 1.2rem;
+    scrollbar-width: none;
+  }
+
+  .filters::-webkit-scrollbar { display: none; }
+
+  .filter { flex: 0 0 auto; }
 }
 
 .filter {
@@ -633,16 +670,19 @@ h2 {
   color: var(--muted);
 }
 
-.comp__bar {
-  height: 4px;
-  background: var(--line);
-  position: relative;
+.comp__ticks {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  height: 8px;
 }
 
-.comp__bar i {
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: calc(var(--lvl) * 20%);
+.comp__ticks i {
+  display: block;
+  background: var(--line);
+}
+
+.comp__ticks i.is-on {
   background: linear-gradient(90deg, var(--gold), var(--cyan));
 }
 
@@ -788,6 +828,7 @@ h2 {
   border-radius: 22px;
   overflow: hidden;
   position: relative;
+  animation: fadeUp 0.35s ease both;
 }
 
 .project__close {
@@ -795,12 +836,19 @@ h2 {
   top: 1rem;
   right: 1rem;
   z-index: 2;
-  background: rgba(7, 8, 11, 0.7);
+  min-width: 44px;
+  min-height: 44px;
+  background: rgba(7, 8, 11, 0.78);
   color: var(--text);
   border: 1px solid var(--line-strong);
   border-radius: 999px;
-  padding: 0.55rem 0.9rem;
+  padding: 0.55rem 0.95rem;
   cursor: pointer;
+}
+
+.project__close:hover {
+  border-color: var(--gold);
+  color: var(--gold-2);
 }
 
 .project__hero {
@@ -970,8 +1018,8 @@ body.project-open {
     transform: none;
   }
 
-  .hero__cube {
-    display: none;
+  .hero__frame {
+    inset: 0.5rem;
   }
 
   .comp {
