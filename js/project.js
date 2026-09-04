@@ -8,11 +8,22 @@ function openProject(slug) {
   const body = document.getElementById("project-body");
   if (!game || !root || !body) return;
 
+  if (window.Playable) window.Playable.stop();
+
   const links = game.links || {};
   const actions = [
-    links.play ? `<a class="btn btn--primary" href="${escapeHtml(links.play)}" target="_blank" rel="noopener">Play</a>` : "",
-    links.project ? `<a class="btn btn--ghost" href="${escapeHtml(links.project)}" target="_blank" rel="noopener">View project</a>` : "",
-    links.github ? `<a class="btn btn--ghost" href="${escapeHtml(links.github)}" target="_blank" rel="noopener">GitHub</a>` : "",
+    game.play
+      ? `<button class="btn btn--primary" type="button" id="project-play">${escapeHtml(t("project.play"))}</button>`
+      : "",
+    links.play
+      ? `<a class="btn btn--ghost" href="${escapeHtml(links.play)}" target="_blank" rel="noopener">${escapeHtml(t("project.playExternal"))}</a>`
+      : "",
+    links.project && links.project !== links.play
+      ? `<a class="btn btn--ghost" href="${escapeHtml(links.project)}" target="_blank" rel="noopener">${escapeHtml(t("project.view"))}</a>`
+      : "",
+    links.github
+      ? `<a class="btn btn--ghost" href="${escapeHtml(links.github)}" target="_blank" rel="noopener">${escapeHtml(t("project.github"))}</a>`
+      : "",
   ].join("");
 
   const shots = (game.screenshots || [])
@@ -20,41 +31,52 @@ function openProject(slug) {
     .join("");
 
   const features = (game.features || [])
-    .map((item) => `<li>${escapeHtml(item)}</li>`)
+    .map((item) => `<li>${escapeHtml(loc(item))}</li>`)
     .join("");
 
   const video = game.video
     ? `<div class="project__video"><video controls playsinline preload="metadata" poster="${escapeHtml(game.image)}"><source src="${escapeHtml(game.video)}" type="video/mp4"></video></div>`
     : "";
 
+  const playNote = game.play?.type === "embed" ? t("project.embed") : t("project.prototype");
+
   body.innerHTML = `
-    <div class="project__hero">
-      <img src="${escapeHtml(game.image)}" alt="${escapeHtml(game.title)}">
-    </div>
+    <div class="project__play" id="project-play-root"></div>
     <div class="project__content">
-      <p class="eyebrow">${escapeHtml(game.status || "")}</p>
+      <p class="eyebrow">${escapeHtml(loc(game.status) || "")}</p>
       <h2 id="project-title">${escapeHtml(game.title)}</h2>
       <div class="project__meta">
-        <span>${escapeHtml(game.genre || "")}</span>
+        <span>${escapeHtml(loc(game.genre) || "")}</span>
         <span>${escapeHtml((game.platforms || []).join(" · "))}</span>
         <span>${escapeHtml((game.technologies || []).join(" · "))}</span>
       </div>
-      <p>${escapeHtml(game.longDescription || game.description)}</p>
+      <p>${escapeHtml(loc(game.longDescription || game.description))}</p>
+      <p class="project__note">${escapeHtml(playNote)}</p>
       <div class="project__actions">${actions}</div>
       <div class="project__grid">
         <div>
-          <h3>Role</h3>
-          <p>${escapeHtml(game.role || "")}</p>
+          <h3>${escapeHtml(t("project.role"))}</h3>
+          <p>${escapeHtml(loc(game.role) || "")}</p>
         </div>
         <div>
-          <h3>Features</h3>
+          <h3>${escapeHtml(t("project.features"))}</h3>
           <ul>${features}</ul>
         </div>
       </div>
-      ${shots ? `<h3>Screenshots</h3><div class="shots">${shots}</div>` : ""}
+      ${shots ? `<h3>${escapeHtml(t("project.screenshots"))}</h3><div class="shots">${shots}</div>` : ""}
       ${video}
     </div>
   `;
+
+  const playRoot = document.getElementById("project-play-root");
+  if (playRoot && window.Playable && game.play) {
+    window.Playable.mount(playRoot, game);
+  }
+
+  document.getElementById("project-play")?.addEventListener("click", () => {
+    playRoot?.scrollIntoView({ behavior: "smooth", block: "center" });
+    window.Playable?.start?.();
+  });
 
   root.hidden = false;
   document.body.classList.add("project-open");
@@ -62,6 +84,7 @@ function openProject(slug) {
 
 function hideProject() {
   const root = document.getElementById("project");
+  if (window.Playable) window.Playable.stop();
   if (root) root.hidden = true;
   document.body.classList.remove("project-open");
 }
@@ -93,3 +116,6 @@ function initProject() {
   window.addEventListener("hashchange", routeFromHash);
   routeFromHash();
 }
+
+window.openProject = openProject;
+window.routeFromHash = routeFromHash;

@@ -1,35 +1,39 @@
 const GAMES = window.GAMES = [
-  // ---------------------------------------------------------------------------
-  // Add a new game here.
-  // 1. Copy one of the objects below.
-  // 2. Change title, slug, description, image, categories, platforms, etc.
-  // 3. Put cover.webp (and optional screenshots) into assets/games/<slug>/
-  // 4. Commit and push. GitHub Pages will update automatically.
-  // ---------------------------------------------------------------------------
   {
     title: "Phantom Rivals",
     slug: "phantom-rivals",
-    description:
-      "Top-down racing for Yandex Games. Players take turns, then race against a ghost of the previous run.",
-    longDescription:
-      "A browser racing game built in Unity for the Yandex Games platform. The core twist is turn-based racing: one player drives a lap, then the next player races against a ghost recording of that run. The project includes car selection, a shop, AI opponents, lap and checkpoint flow, mobile controls and Yandex Games SDK integration.",
+    description: {
+      en: "Top-down racing for Yandex Games. Players take turns, then race against a ghost of the previous run.",
+      ru: "Гонки сверху вниз для Яндекс Игр. Игроки ходят по очереди, затем соревнуются с призраком прошлого заезда.",
+    },
+    longDescription: {
+      en: "A browser racing game built in Unity for the Yandex Games platform. The core twist is turn-based racing: one player drives a lap, then the next player races against a ghost recording of that run. The project includes car selection, a shop, AI opponents, lap and checkpoint flow, mobile controls and Yandex Games SDK integration.",
+      ru: "Браузерная гонка на Unity для Яндекс Игр. Главный твист — пошаговые заезды: один игрок проходит круг, следующий соревнуется с записью-призраком. В проекте выбор машин, магазин, ИИ, чекпоинты, мобильное управление и SDK Яндекс Игр.",
+    },
     image: "assets/games/phantom-rivals/cover.webp",
     screenshots: [],
     video: "",
-    genre: "Racing",
+    genre: { en: "Racing", ru: "Гонки" },
     categories: ["WEBGL", "UNITY", "ACTION"],
     platforms: ["WebGL", "Yandex Games", "Mobile"],
     technologies: ["Unity", "C#", "WebGL", "DOTween", "A* Pathfinding", "Yandex Games SDK"],
-    status: "Published",
+    status: { en: "Published", ru: "Опубликовано" },
     featured: true,
-    role: "Solo developer — gameplay, systems, UI, publishing",
+    role: {
+      en: "Solo developer — gameplay, systems, UI, publishing",
+      ru: "Соло — геймплей, системы, UI, релиз",
+    },
     features: [
-      "Ghost racing: take turns, then compete against a recorded run",
-      "Car selection, shop and progression",
-      "AI opponents with path following",
-      "Mobile-ready controls and WebGL build",
-      "Yandex Games SDK (ads, rewards, platform services)",
+      {
+        en: "Ghost racing: take turns, then compete against a recorded run",
+        ru: "Гонка с призраком: ход за ходом, затем заезд против записи",
+      },
+      { en: "Car selection, shop and progression", ru: "Выбор машин, магазин и прогрессия" },
+      { en: "AI opponents with path following", ru: "ИИ-соперники с движением по пути" },
+      { en: "Mobile-ready controls and WebGL build", ru: "Мобильное управление и WebGL-сборка" },
+      { en: "Yandex Games SDK (ads, rewards, platform services)", ru: "SDK Яндекс Игр (реклама, награды, сервисы)" },
     ],
+    play: { type: "canvas" },
     links: {
       play: "",
       project: "",
@@ -39,10 +43,14 @@ const GAMES = window.GAMES = [
   {
     title: "KnightGame",
     slug: "knightgame",
-    description:
-      "Top-down dungeon action for Yandex Games. Explore rooms, collect coins, fight enemies and upgrade your knight.",
-    longDescription:
-      "A 2D top-down dungeon crawler published for Yandex Games. You control a knight through tiled rooms, collecting coins, avoiding hazards and fighting enemies. The project covers player combat, shop upgrades, mobile joystick controls, localization and the Yandex Games SDK.",
+    description: {
+      en: "Top-down dungeon action for Yandex Games. Explore rooms, collect coins, fight enemies and upgrade your knight.",
+      ru: "Данжен-экшен сверху вниз для Яндекс Игр. Комнаты, монеты, враги и прокачка рыцаря.",
+    },
+    longDescription: {
+      en: "A 2D top-down dungeon crawler published for Yandex Games. You control a knight through tiled rooms, collecting coins, avoiding hazards and fighting enemies. The project covers player combat, shop upgrades, mobile joystick controls, localization and the Yandex Games SDK.",
+      ru: "2D данжен-кроулер сверху вниз, выпущенный в Яндекс Играх. Рыцарь ходит по комнатам, собирает монеты, обходит ловушки и бьёт врагов. В проекте боевая система, магазин прокачки, мобильный джойстик, локализация и SDK Яндекс Игр.",
+    },
     image: "assets/games/knightgame/cover.webp",
     screenshots: [
       "assets/games/knightgame/screenshots/01.webp",
@@ -51,20 +59,24 @@ const GAMES = window.GAMES = [
       "assets/games/knightgame/screenshots/04.webp",
     ],
     video: "assets/games/knightgame/gameplay.mp4",
-    genre: "Action",
+    genre: { en: "Action", ru: "Экшен" },
     categories: ["WEBGL", "UNITY", "ACTION", "CASUAL", "MOBILE"],
     platforms: ["WebGL", "Yandex Games", "Mobile"],
     technologies: ["Unity", "C#", "WebGL", "uGUI", "Yandex Games SDK"],
-    status: "Published",
+    status: { en: "Published", ru: "Опубликовано" },
     featured: false,
-    role: "Solo developer — gameplay, systems, UI, publishing",
+    role: {
+      en: "Solo developer — gameplay, systems, UI, publishing",
+      ru: "Соло — геймплей, системы, UI, релиз",
+    },
     features: [
-      "Top-down dungeon exploration and combat",
-      "Collectibles, hazards and enemy encounters",
-      "Knight shop and upgrades",
-      "Mobile joystick controls",
-      "Yandex Games SDK integration",
+      { en: "Top-down dungeon exploration and combat", ru: "Исследование данжа и бой сверху вниз" },
+      { en: "Collectibles, hazards and enemy encounters", ru: "Сбор предметов, ловушки и враги" },
+      { en: "Knight shop and upgrades", ru: "Магазин и прокачка рыцаря" },
+      { en: "Mobile joystick controls", ru: "Мобильный джойстик" },
+      { en: "Yandex Games SDK integration", ru: "Интеграция SDK Яндекс Игр" },
     ],
+    play: { type: "canvas" },
     links: {
       play: "",
       project: "",
@@ -74,27 +86,35 @@ const GAMES = window.GAMES = [
   {
     title: "PokerShot 3D",
     slug: "pokershot-3d",
-    description:
-      "A 3D arena hybrid: auto-shooter combat mixed with poker hands, chips and combo scoring.",
-    longDescription:
-      "An experimental 3D prototype that mixes arena auto-shooter combat with poker evaluation. Waves of enemies, chip pickups, combo effects and a poker hand HUD sit on top of a Unity Addressables setup. Currently in active development as an arena prototype.",
+    description: {
+      en: "A 3D arena hybrid: auto-shooter combat mixed with poker hands, chips and combo scoring.",
+      ru: "Гибрид 3D-арены: автошутер, покерные комбинации, фишки и комбо-счёт.",
+    },
+    longDescription: {
+      en: "An experimental 3D prototype that mixes arena auto-shooter combat with poker evaluation. Waves of enemies, chip pickups, combo effects and a poker hand HUD sit on top of a Unity Addressables setup. Currently in active development as an arena prototype.",
+      ru: "Экспериментальный 3D-прототип: автошутер на арене плюс оценка покерной комбинации. Волны врагов, фишки, комбо и HUD руки на базе Unity Addressables. Сейчас в активной разработке.",
+    },
     image: "assets/games/pokershot-3d/cover.webp",
     screenshots: [],
     video: "",
-    genre: "Action",
+    genre: { en: "Action", ru: "Экшен" },
     categories: ["UNITY", "ACTION", "WEBGL"],
     platforms: ["WebGL"],
     technologies: ["Unity", "C#", "Addressables", "DOTween"],
-    status: "In development",
+    status: { en: "In development", ru: "В разработке" },
     featured: false,
-    role: "Solo developer — gameplay, combat systems, UI",
+    role: {
+      en: "Solo developer — gameplay, combat systems, UI",
+      ru: "Соло — геймплей, боевые системы, UI",
+    },
     features: [
-      "Auto-shooter combat in a 3D arena",
-      "Poker hand evaluation tied to gameplay",
-      "Chip magnet collectibles and combo effects",
-      "Wave spawning and run state flow",
-      "Addressables-based content loading",
+      { en: "Auto-shooter combat in a 3D arena", ru: "Автошутер на 3D-арене" },
+      { en: "Poker hand evaluation tied to gameplay", ru: "Покерная комбинация влияет на бой" },
+      { en: "Chip magnet collectibles and combo effects", ru: "Магнит фишек и комбо-эффекты" },
+      { en: "Wave spawning and run state flow", ru: "Спавн волн и цикл рана" },
+      { en: "Addressables-based content loading", ru: "Загрузка контента через Addressables" },
     ],
+    play: { type: "canvas" },
     links: {
       play: "",
       project: "",
@@ -104,27 +124,35 @@ const GAMES = window.GAMES = [
   {
     title: "Telegram War",
     slug: "telegram-war",
-    description:
-      "A Telegram Mini App survivor prototype: waves of enemies, upgrades and a structured game loop.",
-    longDescription:
-      "A Unity WebGL prototype built for Telegram Mini Apps. The player survives waves of enemies, collects experience and picks upgrades between rounds. The codebase is organized around a game state machine, service locator, enemy factory/pool and Addressables. A playable build is hosted on Vercel.",
+    description: {
+      en: "A Telegram Mini App survivor prototype: waves of enemies, upgrades and a structured game loop.",
+      ru: "Прототип выживалки для Telegram Mini App: волны врагов, апгрейды и собранный игровой цикл.",
+    },
+    longDescription: {
+      en: "A Unity WebGL prototype built for Telegram Mini Apps. The player survives waves of enemies, collects experience and picks upgrades between rounds. The codebase is organized around a game state machine, service locator, enemy factory/pool and Addressables. A playable build is hosted on Vercel.",
+      ru: "Unity WebGL-прототип для Telegram Mini Apps. Игрок выживает волны, собирает опыт и выбирает апгрейды между раундами. Код построен вокруг стейт-машины, service locator, фабрики/пула врагов и Addressables. Игровую сборку можно запустить прямо здесь.",
+    },
     image: "assets/games/telegram-war/cover.webp",
     screenshots: [],
     video: "",
-    genre: "Action",
+    genre: { en: "Action", ru: "Экшен" },
     categories: ["WEBGL", "UNITY", "ACTION", "MOBILE", "OTHER"],
     platforms: ["WebGL", "Telegram"],
     technologies: ["Unity", "C#", "WebGL", "Addressables", "Telegram Mini Apps"],
-    status: "Playable demo",
+    status: { en: "Playable demo", ru: "Игровое демо" },
     featured: false,
-    role: "Solo developer — architecture, combat, systems",
+    role: {
+      en: "Solo developer — architecture, combat, systems",
+      ru: "Соло — архитектура, бой, системы",
+    },
     features: [
-      "Wave-based survivor loop with difficulty scaling",
-      "Upgrade selection between rounds",
-      "Enemy factory, pooling and combat pipeline",
-      "Game state machine (menu, gameplay, game over)",
-      "Telegram WebApp bootstrap for Mini App play",
+      { en: "Wave-based survivor loop with difficulty scaling", ru: "Выживалка с волнами и нарастающей сложностью" },
+      { en: "Upgrade selection between rounds", ru: "Выбор апгрейдов между раундами" },
+      { en: "Enemy factory, pooling and combat pipeline", ru: "Фабрика врагов, пулинг и боевой пайплайн" },
+      { en: "Game state machine (menu, gameplay, game over)", ru: "Стейт-машина (меню, бой, game over)" },
+      { en: "Telegram WebApp bootstrap for Mini App play", ru: "Telegram WebApp для запуска как Mini App" },
     ],
+    play: { type: "embed", src: "https://telegram-war.vercel.app" },
     links: {
       play: "https://telegram-war.vercel.app",
       project: "https://telegram-war.vercel.app",

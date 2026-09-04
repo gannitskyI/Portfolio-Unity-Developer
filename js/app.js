@@ -1,23 +1,33 @@
-function getPath(object, path) {
-  return path.split(".").reduce((acc, key) => (acc ? acc[key] : ""), object);
-}
-
 function applyConfig() {
   const config = window.CONFIG || {};
   document.querySelectorAll("[data-config]").forEach((node) => {
-    const value = getPath(config, node.dataset.config);
+    const value = loc(getPath(config, node.dataset.config));
     if (typeof value === "string" && value) node.textContent = value;
   });
 
   const nameNode = document.querySelector(".hero__name");
-  if (nameNode && config.name) {
-    nameNode.innerHTML = config.name
+  const displayName = loc(config.name);
+  if (nameNode && displayName) {
+    nameNode.innerHTML = displayName
       .split(" ")
       .map((part) => `<span>${escapeHtml(part)}</span>`)
       .join("");
   }
+  const title = document.querySelector(".hero__title");
+  if (title && displayName) title.setAttribute("aria-label", displayName);
 
-  if (config.seo?.title) document.title = config.seo.title;
+  const seoTitle = loc(config.seo?.title);
+  if (seoTitle) document.title = seoTitle;
+  const seoDesc = loc(config.seo?.description);
+  if (seoDesc) {
+    document.querySelector('meta[name="description"]')?.setAttribute("content", seoDesc);
+    document.querySelector('meta[property="og:description"]')?.setAttribute("content", seoDesc);
+    document.querySelector('meta[name="twitter:description"]')?.setAttribute("content", seoDesc);
+  }
+  if (seoTitle) {
+    document.querySelector('meta[property="og:title"]')?.setAttribute("content", seoTitle);
+    document.querySelector('meta[name="twitter:title"]')?.setAttribute("content", seoTitle);
+  }
 }
 
 function renderAbout() {
@@ -27,7 +37,7 @@ function renderAbout() {
 
   if (focus) {
     focus.innerHTML = (about.focus || [])
-      .map((item) => `<li>${escapeHtml(item)}</li>`)
+      .map((item) => `<li>${escapeHtml(loc(item))}</li>`)
       .join("");
   }
 
@@ -54,7 +64,7 @@ function renderSkills() {
     .map(
       (group) => `
       <article class="skill-group">
-        <h3>${escapeHtml(group.title)}</h3>
+        <h3>${escapeHtml(loc(group.title))}</h3>
         <div class="skill-group__items">
           ${(group.items || [])
             .map((item) => `<span class="skill">${escapeHtml(item)}</span>`)
@@ -72,10 +82,10 @@ function renderExperience() {
     .map(
       (item) => `
       <li>
-        <div class="timeline__period">${escapeHtml(item.period)}</div>
-        <h3>${escapeHtml(item.role)}</h3>
-        <p class="timeline__place">${escapeHtml(item.place)}</p>
-        <ul>${(item.points || []).map((point) => `<li>${escapeHtml(point)}</li>`).join("")}</ul>
+        <div class="timeline__period">${escapeHtml(loc(item.period))}</div>
+        <h3>${escapeHtml(loc(item.role))}</h3>
+        <p class="timeline__place">${escapeHtml(loc(item.place))}</p>
+        <ul>${(item.points || []).map((point) => `<li>${escapeHtml(loc(point))}</li>`).join("")}</ul>
       </li>`
     )
     .join("");
@@ -98,7 +108,7 @@ function renderContact() {
   const items = [];
 
   if (CONFIG.email) {
-    items.push(`<a class="btn btn--primary" href="mailto:${escapeHtml(CONFIG.email)}">${icon("mail")} Email me</a>`);
+    items.push(`<a class="btn btn--primary" href="mailto:${escapeHtml(CONFIG.email)}">${icon("mail")} ${escapeHtml(t("contact.email"))}</a>`);
   }
   if (social.telegram) {
     items.push(`<a class="btn btn--ghost" href="${escapeHtml(social.telegram)}" target="_blank" rel="noopener">${icon("telegram")} Telegram</a>`);
@@ -122,6 +132,30 @@ function renderContact() {
   root.innerHTML = items.join("");
 }
 
+function initLang() {
+  document.querySelectorAll(".lang__btn").forEach((button) => {
+    button.addEventListener("click", () => setLang(button.dataset.lang));
+  });
+  document.addEventListener("portfolio:lang", refreshContent);
+}
+
+function refreshContent() {
+  applyStaticI18n();
+  applyConfig();
+  renderGames(window.GAMES || []);
+  renderAbout();
+  renderSkills();
+  renderExperience();
+  renderContact();
+  initFilters();
+  document.querySelectorAll(".game-card").forEach((node) => {
+    node.classList.add("reveal", "is-in");
+  });
+  if (location.hash.startsWith("#/game/")) {
+    window.routeFromHash?.();
+  }
+}
+
 function initNav() {
   const nav = document.getElementById("nav");
   const toggle = document.getElementById("nav-toggle");
@@ -135,7 +169,7 @@ function initNav() {
     const open = !nav.classList.contains("is-open");
     nav.classList.toggle("is-open", open);
     toggle.setAttribute("aria-expanded", open ? "true" : "false");
-    toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    toggle.setAttribute("aria-label", open ? t("nav.closeMenu") : t("nav.menu"));
   });
 
   links?.querySelectorAll("a").forEach((link) => {
@@ -194,12 +228,14 @@ function initClock() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  applyStaticI18n();
   applyConfig();
   renderGames(window.GAMES || []);
   renderAbout();
   renderSkills();
   renderExperience();
   renderContact();
+  initLang();
   initFilters();
   initProject();
   initNav();

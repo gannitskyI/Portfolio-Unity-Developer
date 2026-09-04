@@ -19,9 +19,10 @@ function renderGames(games) {
         .map((item) => `<span class="chip">${escapeHtml(item)}</span>`)
         .join("");
       const featured = game.featured
-        ? `<span class="game-card__featured">Featured</span>`
+        ? `<span class="game-card__featured">${escapeHtml(t("games.featured"))}</span>`
         : "";
-      const cta = game.links?.play ? "Play" : "View project";
+      const playable = Boolean(game.play);
+      const cta = playable ? t("games.play") : t("games.view");
 
       return `
         <a class="game-card${game.featured ? " is-featured" : ""}"
@@ -34,14 +35,14 @@ function renderGames(games) {
           </div>
           <div class="game-card__body">
             <div class="game-card__top">
-              <span class="game-card__status">${escapeHtml(game.status || "")}</span>
+              <span class="game-card__status">${escapeHtml(loc(game.status) || "")}</span>
               ${featured}
             </div>
             <h3>${escapeHtml(game.title)}</h3>
-            <p class="game-card__meta">${escapeHtml(game.genre || "")} · ${escapeHtml(platforms)}</p>
-            <p class="game-card__desc">${escapeHtml(game.description)}</p>
+            <p class="game-card__meta">${escapeHtml(loc(game.genre) || "")} · ${escapeHtml(platforms)}</p>
+            <p class="game-card__desc">${escapeHtml(loc(game.description))}</p>
             <div class="game-card__tech">${tech}</div>
-            <span class="game-card__cta">${cta}</span>
+            <span class="game-card__cta">${escapeHtml(cta)}</span>
           </div>
         </a>
       `;
