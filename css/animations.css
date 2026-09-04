@@ -1,0 +1,28 @@
+@keyframes gridDrift {
+  from { background-position: 0 0; }
+  to { background-position: 0 64px; }
+}
+
+@keyframes cubeFloat {
+  0%, 100% { transform: rotate(18deg) translateY(0); opacity: 0.85; }
+  50% { transform: rotate(26deg) translateY(-12px); opacity: 1; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+
+.hero__content {
+  animation: fadeUp 0.9s ease both;
+}
+
+.game-card.is-hiding {
+  opacity: 0;
+  transform: scale(0.98);
+  pointer-events: none;
+}
+
+.game-card.is-showing {
+  animation: fadeUp 0.45s ease both;
+}
