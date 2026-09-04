@@ -110,6 +110,7 @@ Paste a new object into the `GAMES` array. A comment in the file marks the place
     "Feature one",
     "Feature two"
   ],
+  play: { type: "canvas" },
   links: {
     play: "https://...",
     project: "",
@@ -156,6 +157,13 @@ These covers are placeholders (key art), except KnightGame, which uses real game
 
 Also add playable links in `data/games.js` when a Yandex Games / store page is ready (`links.play`).
 
+Every game on this site is playable in the project overlay:
+
+- Phantom Rivals, KnightGame and PokerShot 3D include in-browser prototypes of the core loop (`play: { type: "canvas" }`).
+- Telegram War embeds the live Unity WebGL build (`play: { type: "embed", src: "..." }`).
+
+The header has a **RU / EN** language switch. The choice is stored in `localStorage`.
+
 Add your email in `data/config.js`.
 
 ## Project structure
@@ -168,6 +176,8 @@ Add your email in `data/config.js`.
 │   ├── style.css
 │   └── animations.css
 ├── js/
+│   ├── i18n.js
+│   ├── playable.js
 │   ├── app.js
 │   ├── games.js
 │   ├── filters.js

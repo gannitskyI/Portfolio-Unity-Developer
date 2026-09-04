@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,24 +29,30 @@
   <link rel="stylesheet" href="css/animations.css">
 </head>
 <body>
-  <a class="skip-link" href="#games">Skip to games</a>
+  <a class="skip-link" href="#games" data-i18n="skip">Skip to games</a>
 
   <header class="nav" id="nav">
     <a class="nav__brand" href="#home" data-scroll>
-      <span class="nav__mark" aria-hidden="true">IG</span>
+      <img class="nav__photo" src="assets/images/portrait-circle.png" alt="" width="34" height="34" data-portrait>
       <span class="nav__name" data-config="name">Ilya Gannitsky</span>
     </a>
     <nav class="nav__links" id="nav-links" aria-label="Primary">
-      <a href="#home" data-scroll>Home</a>
-      <a href="#games" data-scroll>Games</a>
-      <a href="#about" data-scroll>About</a>
-      <a href="#skills" data-scroll>Skills</a>
-      <a href="#experience" data-scroll>Experience</a>
-      <a href="#contact" data-scroll>Contact</a>
+      <a href="#home" data-scroll data-i18n="nav.home">Home</a>
+      <a href="#games" data-scroll data-i18n="nav.games">Games</a>
+      <a href="#about" data-scroll data-i18n="nav.about">About</a>
+      <a href="#skills" data-scroll data-i18n="nav.skills">Skills</a>
+      <a href="#experience" data-scroll data-i18n="nav.experience">Experience</a>
+      <a href="#contact" data-scroll data-i18n="nav.contact">Contact</a>
     </nav>
-    <button class="nav__toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">
-      <span></span><span></span>
-    </button>
+    <div class="nav__end">
+      <div class="lang" role="group" aria-label="Language">
+        <button class="lang__btn" type="button" data-lang="ru" aria-pressed="false">RU</button>
+        <button class="lang__btn" type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <button class="nav__toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu" data-i18n-attr="aria-label" data-i18n-attr-key="nav.menu">
+        <span></span><span></span>
+      </button>
+    </div>
   </header>
 
   <main>
@@ -56,107 +62,125 @@
         <div class="hero__glow"></div>
         <div class="hero__scan"></div>
         <div class="hero__hud">
-          <span>SCENE // HERO</span>
+          <span data-i18n="hero.hudScene">SCENE // HERO</span>
           <span data-hud-clock>00:00:00</span>
-          <span>UNITY / C# / WEBGL</span>
-          <span>VIEWPORT 16:9</span>
+          <span data-i18n="hero.hudTech">UNITY / C# / WEBGL</span>
+          <span data-i18n="hero.hudViewport">VIEWPORT 16:9</span>
         </div>
         <div class="hero__frame" aria-hidden="true">
           <i></i><i></i><i></i><i></i>
         </div>
       </div>
 
-      <div class="hero__content">
-        <p class="eyebrow">Available for studios &amp; collaborations</p>
-        <h1 class="hero__title" aria-label="Ilya Gannitsky">
-          <span class="hero__name" data-config="name">Ilya Gannitsky</span>
-        </h1>
-        <p class="hero__role" data-config="role">Unity / C# Game Developer</p>
-        <p class="hero__tag" data-config="tagline">WebGL • Mobile • Gameplay • Game Systems</p>
-        <p class="hero__summary" data-config="summary">
-          Game developer focused on Unity, C# and WebGL development, creating polished gameplay experiences for browser and mobile platforms.
-        </p>
-        <div class="hero__cta">
-          <a class="btn btn--primary" href="#games" data-scroll>View my games</a>
-          <a class="btn btn--ghost" href="#contact" data-scroll>Contact me</a>
+      <div class="hero__layout">
+        <div class="hero__content">
+          <p class="eyebrow" data-i18n="hero.eyebrow">Available for studios &amp; collaborations</p>
+          <h1 class="hero__title" aria-label="Ilya Gannitsky">
+            <span class="hero__name" data-config="name">Ilya Gannitsky</span>
+          </h1>
+          <p class="hero__role" data-config="role">Unity / C# Game Developer</p>
+          <p class="hero__tag" data-config="tagline">WebGL • Mobile • Gameplay • Game Systems</p>
+          <p class="hero__summary" data-config="summary">
+            Game developer focused on Unity, C# and WebGL development, creating polished gameplay experiences for browser and mobile platforms.
+          </p>
+          <div class="hero__cta">
+            <a class="btn btn--primary" href="#games" data-scroll data-i18n="hero.ctaGames">View my games</a>
+            <a class="btn btn--ghost" href="#contact" data-scroll data-i18n="hero.ctaContact">Contact me</a>
+          </div>
+        </div>
+
+        <div class="hero__portrait">
+          <div class="hero__portrait-glow" aria-hidden="true"></div>
+          <div class="hero__portrait-offset" aria-hidden="true"></div>
+          <figure class="hero__portrait-frame">
+            <img src="assets/images/portrait.jpg" width="457" height="500" alt="Portrait of Ilya Gannitsky" data-portrait>
+            <figcaption class="hero__portrait-badge" data-i18n="hero.badge">Unity developer</figcaption>
+          </figure>
         </div>
       </div>
     </section>
 
     <section class="section" id="games">
       <div class="section__head">
-        <p class="eyebrow">Selected work</p>
-        <h2>Games</h2>
-        <p class="section__lead">Shipped and in-progress titles. Filter by platform or genre.</p>
+        <p class="eyebrow" data-i18n="games.eyebrow">Selected work</p>
+        <h2 data-i18n="games.title">Games</h2>
+        <p class="section__lead" data-i18n="games.lead">Shipped and in-progress titles. Filter by platform or genre.</p>
       </div>
 
       <div class="filters" id="filters" role="tablist" aria-label="Filter games">
-        <button class="filter is-active" data-filter="ALL" aria-pressed="true">All</button>
-        <button class="filter" data-filter="WEBGL" aria-pressed="false">WebGL</button>
-        <button class="filter" data-filter="MOBILE" aria-pressed="false">Mobile</button>
-        <button class="filter" data-filter="UNITY" aria-pressed="false">Unity</button>
-        <button class="filter" data-filter="CASUAL" aria-pressed="false">Casual</button>
-        <button class="filter" data-filter="ACTION" aria-pressed="false">Action</button>
-        <button class="filter" data-filter="OTHER" aria-pressed="false">Other</button>
+        <button class="filter is-active" data-filter="ALL" aria-pressed="true" data-i18n="filters.ALL">All</button>
+        <button class="filter" data-filter="WEBGL" aria-pressed="false" data-i18n="filters.WEBGL">WebGL</button>
+        <button class="filter" data-filter="MOBILE" aria-pressed="false" data-i18n="filters.MOBILE">Mobile</button>
+        <button class="filter" data-filter="UNITY" aria-pressed="false" data-i18n="filters.UNITY">Unity</button>
+        <button class="filter" data-filter="CASUAL" aria-pressed="false" data-i18n="filters.CASUAL">Casual</button>
+        <button class="filter" data-filter="ACTION" aria-pressed="false" data-i18n="filters.ACTION">Action</button>
+        <button class="filter" data-filter="OTHER" aria-pressed="false" data-i18n="filters.OTHER">Other</button>
       </div>
 
       <div class="games" id="games-grid"></div>
-      <p class="games__empty" id="games-empty" hidden>No games in this category yet.</p>
+      <p class="games__empty" id="games-empty" hidden data-i18n="games.empty">No games in this category yet.</p>
     </section>
 
     <section class="section" id="about">
       <div class="about">
-        <div class="section__head">
-          <p class="eyebrow">Profile</p>
-          <h2>About me</h2>
+        <div class="about__photo">
+          <img src="assets/images/portrait-circle.png" width="512" height="512" alt="Portrait of Ilya Gannitsky" data-portrait>
         </div>
-        <p class="about__headline" data-config="about.headline"></p>
-        <p class="about__body" data-config="about.body"></p>
-        <ul class="about__focus" id="about-focus"></ul>
-        <div class="competencies" id="competencies"></div>
+        <div class="about__copy">
+          <div class="section__head">
+            <p class="eyebrow" data-i18n="about.eyebrow">Profile</p>
+            <h2 data-i18n="about.title">About me</h2>
+          </div>
+          <p class="about__headline" data-config="about.headline"></p>
+          <p class="about__body" data-config="about.body"></p>
+          <ul class="about__focus" id="about-focus"></ul>
+          <div class="competencies" id="competencies"></div>
+        </div>
       </div>
     </section>
 
     <section class="section" id="skills">
       <div class="section__head">
-        <p class="eyebrow">Stack</p>
-        <h2>Skills</h2>
+        <p class="eyebrow" data-i18n="skills.eyebrow">Stack</p>
+        <h2 data-i18n="skills.title">Skills</h2>
       </div>
       <div class="skills" id="skills-grid"></div>
     </section>
 
     <section class="section" id="experience">
       <div class="section__head">
-        <p class="eyebrow">Track record</p>
-        <h2>Experience</h2>
+        <p class="eyebrow" data-i18n="experience.eyebrow">Track record</p>
+        <h2 data-i18n="experience.title">Experience</h2>
       </div>
       <ol class="timeline" id="timeline"></ol>
     </section>
 
     <section class="section contact" id="contact">
-      <p class="eyebrow">Next step</p>
-      <h2>Let’s build something great</h2>
-      <p class="section__lead">Have a project, opportunity or just want to talk game development?</p>
+      <p class="eyebrow" data-i18n="contact.eyebrow">Next step</p>
+      <h2 data-i18n="contact.title">Let’s build something great</h2>
+      <p class="section__lead" data-i18n="contact.lead">Have a project, opportunity or just want to talk game development?</p>
       <div class="contact__actions" id="contact-actions"></div>
     </section>
   </main>
 
   <footer class="footer">
     <p><span data-config="name">Ilya Gannitsky</span> · Unity / C# · WebGL</p>
-    <p class="footer__copy">© <span id="year"></span> · Built to ship games</p>
+    <p class="footer__copy">© <span id="year"></span> · <span data-i18n="footer.copy">Built to ship games</span></p>
   </footer>
 
   <div class="project" id="project" hidden>
     <div class="project__panel" role="dialog" aria-modal="true" aria-labelledby="project-title">
-      <button class="project__close" id="project-close" aria-label="Close project">Close</button>
+      <button class="project__close" id="project-close" data-i18n="project.close">Close</button>
       <div class="project__body" id="project-body"></div>
     </div>
   </div>
 
   <script src="data/config.js"></script>
   <script src="data/games.js"></script>
+  <script src="js/i18n.js"></script>
   <script src="js/games.js"></script>
   <script src="js/filters.js"></script>
+  <script src="js/playable.js"></script>
   <script src="js/project.js"></script>
   <script src="js/app.js"></script>
 </body>
