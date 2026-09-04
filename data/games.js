@@ -1,5 +1,48 @@
 const GAMES = window.GAMES = [
   {
+    title: "Слово на лотке",
+    slug: "slovo-na-lotke",
+    description: {
+      en: "A portrait word puzzle for Yandex Games: slide letter tiles on a wooden tray and assemble the words.",
+      ru: "Словесная головоломка для Яндекс Игр: плитки с буквами на деревянном лотке, из них собираются слова.",
+    },
+    longDescription: {
+      en: "A Godot WebGL word puzzle published for Yandex Games. You place letter tiles on a tray, find words, spend hints and extra moves, and keep a daily streak. This page runs the original browser build outside the Yandex Games shell: ads, auth, leaderboards and cloud saves are stubbed so the game stays playable.",
+      ru: "Словесная головоломка на Godot WebGL для Яндекс Игр. Плитки с буквами на лотке, поиск слов, подсказки, дополнительные ходы и серия дней. Здесь запущена оригинальная браузерная сборка вне оболочки Яндекс Игр: реклама, авторизация, лидерборды и облачные сохранения заменены заглушками, чтобы в игру можно было играть.",
+    },
+    image: "assets/games/slovo-na-lotke/cover.webp",
+    screenshots: ["assets/games/slovo-na-lotke/screenshots/01.webp"],
+    video: "",
+    genre: { en: "Puzzle", ru: "Головоломка" },
+    categories: ["WEBGL", "CASUAL", "MOBILE", "OTHER"],
+    platforms: ["WebGL", "Yandex Games", "Mobile"],
+    technologies: ["Godot", "GDScript", "WebGL", "Yandex Games SDK", "Playgama Bridge"],
+    status: { en: "Playable build", ru: "Игровая сборка" },
+    featured: true,
+    role: {
+      en: "Solo developer — gameplay, UI, levels, Yandex Games publishing",
+      ru: "Соло — геймплей, UI, уровни, релиз в Яндекс Играх",
+    },
+    features: [
+      { en: "Letter-tile word puzzles on a wooden tray", ru: "Словесные пазлы из плиток на деревянном лотке" },
+      { en: "Hints, undo, extra moves and skip", ru: "Подсказки, отмена, дополнительные ходы и пропуск" },
+      { en: "Daily challenges and streak progress", ru: "Ежедневные задания и серия дней" },
+      { en: "Portrait mobile layout, playable in the browser", ru: "Портретная мобильная вёрстка, играется в браузере" },
+      { en: "Yandex Games SDK with local stubs on this site", ru: "SDK Яндекс Игр — на сайте работают локальные заглушки" },
+    ],
+    play: {
+      type: "embed",
+      src: "assets/games/slovo-na-lotke/index.html",
+      orientation: "portrait",
+      hint: "play.lotkeHint",
+    },
+    links: {
+      play: "assets/games/slovo-na-lotke/index.html",
+      project: "",
+      github: "",
+    },
+  },
+  {
     title: "Phantom Rivals",
     slug: "phantom-rivals",
     description: {

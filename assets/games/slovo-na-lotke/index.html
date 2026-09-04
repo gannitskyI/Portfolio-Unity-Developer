@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>Слово на лотке</title>
+	<style>
+html, body, #canvas {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+body {
+	color: #3A2A1C;
+	background-color: #E7CFA8;
+	overflow: hidden;
+	touch-action: none;
+	-webkit-user-select: none;
+	user-select: none;
+}
+#canvas {
+	display: block;
+}
+#canvas:focus {
+	outline: none;
+}
+#status, #status-splash, #status-progress {
+	position: absolute;
+	left: 0;
+	right: 0;
+}
+#status, #status-splash {
+	top: 0;
+	bottom: 0;
+}
+#status {
+	background-color: #E7CFA8;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	visibility: hidden;
+}
+#status-splash {
+	max-height: 100%;
+	max-width: 100%;
+	margin: auto;
+}
+#status-splash.show-image--false {
+	display: none;
+}
+#status-splash.fullsize--true {
+	height: 100%;
+	width: 100%;
+	object-fit: contain;
+}
+#status-splash.use-filter--false {
+	image-rendering: pixelated;
+}
+#status-progress, #status-notice {
+	display: none;
+}
+#status-progress {
+	bottom: 10%;
+	width: 50%;
+	margin: 0 auto;
+}
+#status-notice {
+	background-color: #5b3943;
+	border-radius: 0.5rem;
+	border: 1px solid #9b3943;
+	color: #e0e0e0;
+	font-family: 'Noto Sans', 'Droid Sans', Arial, sans-serif;
+	line-height: 1.3;
+	margin: 0 2rem;
+	overflow: hidden;
+	padding: 1rem;
+	text-align: center;
+	z-index: 1;
+}
+	</style>
+	<link id="-gd-engine-icon" rel="icon" type="image/png" href="index.icon.png" />
+<script src="platform-stubs.js"></script>
+<link rel="apple-touch-icon" href="index.apple-touch-icon.png"/>
+
+<script>
+		window.ysdk = null;
+		window.ysdkPlayer = null;
+		window.pmYa = {
+			lang: "ru",
+			device: "desktop",
+			player: null,
+			authorized: false,
+			name: "",
+			photo: "",
+			uid: ""
+		};
+
+		function _cb(name, arg) {
+			try {
+				if (typeof window[name] === "function") window[name](arg);
+			} catch (e) {}
+		}
+
+		function _profile() {
+			return {
+				authorized: !!window.pmYa.authorized,
+				name: window.pmYa.name || "",
+				photo_url: window.pmYa.photo || "",
+				unique_id: window.pmYa.uid || ""
+			};
+		}
+
+		function _applyPlayer(player) {
+			window.ysdkPlayer = player;
+			window.pmYa.player = player;
+			var authorized = !!(player && player.isAuthorized && player.isAuthorized());
+			window.pmYa.authorized = authorized;
+			window.pmYa.name = authorized && player.getName ? (player.getName() || "") : "";
+			window.pmYa.photo = authorized && player.getPhoto ? (player.getPhoto("medium") || "") : "";
+			window.pmYa.uid = player && player.getUniqueID ? (player.getUniqueID() || "") : "";
+		}
+
+		window.pmYaGameReady = function () {
+			try { window.ysdk?.features?.LoadingAPI?.ready(); } catch (e) {}
+		};
+
+		window.pmYaGameplay = function (kind) {
+			if (!window.ysdk?.features?.GameplayAPI) return;
+			if (window.__pmAdLocked && window.__pmAdLocked()) return;
+			try {
+				if (kind === "start") {
+					if (window.__pmGameplayStarted) return;
+					window.__pmGameplayStarted = true;
+					window.ysdk.features.GameplayAPI.start();
+				} else {
+					window.__pmGameplayStarted = false;
+					window.ysdk.features.GameplayAPI.stop();
+				}
+			} catch (e) {}
+		};
+
+		window.__pmAdBusy = false;
+		window.__pmAdResumeAt = 0;
+		window.__pmGameplayStarted = false;
+		window.__pmIsIOS = function () {
+			try {
+				var ua = String(navigator.userAgent || "");
+				if (/iPad|iPhone|iPod/.test(ua)) return true;
+				return navigator.platform === "MacIntel" && (navigator.maxTouchPoints || 0) > 1;
+			} catch (e) { return false; }
+		};
+		window.__pmAdLocked = function () {
+			return !!(window.__pmAdBusy || Date.now() < (window.__pmAdResumeAt || 0));
+		};
+		window.__pmBeginAd = function () {
+			window.__pmAdBusy = true;
+			window.__pmAdResumeAt = Date.now() + 120000;
+			try { window.ysdk?.adv?.hideBannerAdv?.().catch(function () {}); } catch (e) {}
+		};
+		window.__pmEndAd = function (shown) {
+			var wait = window.__pmIsIOS() ? (shown ? 2100 : 2600) : (shown ? 900 : 1600);
+			window.__pmAdResumeAt = Date.now() + wait;
+			setTimeout(function () {
+				window.__pmAdBusy = false;
+				window.__pmAdResumeAt = 0;
+				// SDK already resumed; mark started so a second start() cannot remount.
+				window.__pmGameplayStarted = true;
+			}, wait);
+		};
+
+		window.pmYaShowFullscreen = function () {
+			if (!window.ysdk?.adv?.showFullscreenAdv) {
+				_cb("pmOnInterstitialClose", JSON.stringify({ was_shown: false }));
+				return;
+			}
+			window.__pmBeginAd();
+			window.ysdk.adv.showFullscreenAdv({
+				callbacks: {
+					onOpen: function () { _cb("pmOnAdOpen"); },
+					onClose: function (wasShown) {
+						window.__pmEndAd(!!wasShown);
+						_cb("pmOnInterstitialClose", JSON.stringify({ was_shown: !!wasShown }));
+					},
+					onError: function () {
+						window.__pmEndAd(false);
+						_cb("pmOnInterstitialClose", JSON.stringify({ was_shown: false }));
+					}
+				}
+			});
+		};
+
+		window.pmYaShowRewarded = function () {
+			if (!window.ysdk?.adv?.showRewardedVideo) {
+				_cb("pmOnRewardedError", "no_adv");
+				return;
+			}
+			window.__pmBeginAd();
+			window.ysdk.adv.showRewardedVideo({
+				callbacks: {
+					onOpen: function () { _cb("pmOnAdOpen"); },
+					onRewarded: function () { _cb("pmOnRewarded"); },
+					onClose: function (wasShown) {
+						window.__pmEndAd(!!wasShown);
+						_cb("pmOnRewardedClose", JSON.stringify({ was_shown: !!wasShown }));
+					},
+					onError: function (err) {
+						window.__pmEndAd(false);
+						_cb("pmOnRewardedError", String(err || "error"));
+					}
+				}
+			});
+		};
+
+		window.pmYaShowBanner = function () {
+			if (window.__pmAdLocked && window.__pmAdLocked()) return;
+			try { window.ysdk?.adv?.showBannerAdv?.().catch(function () {}); } catch (e) {}
+		};
+		window.pmYaHideBanner = function () {
+			try { window.ysdk?.adv?.hideBannerAdv?.().catch(function () {}); } catch (e) {}
+		};
+
+		window.__pmLatestSave = null;
+		window.__pmPersistedSave = null;
+		window.__pmSaveBusy = false;
+		window.__pmSaveFlush = false;
+		window.pmYaLocalLoad = function () {
+			try { return localStorage.getItem("pm_save_v1") || ""; } catch (e) { return ""; }
+		};
+		window.pmYaLocalSave = function (json) {
+			try { if (json) localStorage.setItem("pm_save_v1", json); } catch (e) {}
+		};
+		window.pmYaCloudLoad = function () {
+			if (!window.ysdkPlayer?.getData) {
+				_cb("pmOnCloudData", window.pmYaLocalLoad());
+				return;
+			}
+			window.ysdkPlayer.getData(["pm_save_v1"]).then(function (d) {
+				var payload = (d && d.pm_save_v1) ? d.pm_save_v1 : {};
+				_cb("pmOnCloudData", JSON.stringify(payload || {}));
+			}).catch(function () { _cb("pmOnCloudData", window.pmYaLocalLoad()); });
+		};
+		window.pmYaCloudSave = function (json, flush) {
+			window.pmYaLocalSave(json);
+			if (!window.ysdkPlayer?.setData) return;
+			try {
+				var save = JSON.parse(json);
+				window.__pmPersistedSave = save;
+				window.__pmLatestSave = save;
+			} catch (e) { return; }
+			window.__pmSaveFlush = window.__pmSaveFlush || !!flush;
+			window.__pmPumpSave();
+		};
+		window.__pmPumpSave = async function () {
+			if (window.__pmSaveBusy || !window.ysdkPlayer || !window.__pmLatestSave) return;
+			window.__pmSaveBusy = true;
+			try {
+				while (window.__pmLatestSave) {
+					var save = window.__pmLatestSave;
+					var flush = window.__pmSaveFlush;
+					window.__pmLatestSave = null;
+					window.__pmSaveFlush = false;
+					await window.ysdkPlayer.setData({ pm_save_v1: save }, flush);
+				}
+			} catch (e) {}
+			window.__pmSaveBusy = false;
+			if (window.__pmLatestSave) window.__pmPumpSave();
+		};
+		window.__pmFlushSaveNow = function () {
+			if (!window.ysdkPlayer || !window.__pmPersistedSave) return;
+			window.__pmLatestSave = window.__pmPersistedSave;
+			window.__pmSaveFlush = true;
+			window.__pmPumpSave();
+		};
+
+		window.pmYaAuth = function () {
+			if (!window.ysdk?.auth?.openAuthDialog) {
+				_cb("pmOnAuthResult", JSON.stringify({ success: false, message: "no_auth" }));
+				return;
+			}
+			(async function () {
+				try {
+					await window.ysdk.auth.openAuthDialog();
+					var player = await window.ysdk.getPlayer({ scopes: true });
+					_applyPlayer(player);
+					_cb("pmOnPlayerProfile", JSON.stringify(_profile()));
+					_cb("pmOnAuthResult", JSON.stringify({ success: !!window.pmYa.authorized }));
+					window.pmYaCloudLoad();
+				} catch (error) {
+					_cb("pmOnAuthResult", JSON.stringify({
+						success: false,
+						message: String(error || "cancelled")
+					}));
+				}
+			})();
+		};
+
+		window.pmYaSetScore = function (n) {
+			if (!window.ysdk?.leaderboards || !window.pmYa.authorized) return;
+			(async function () {
+				try {
+					if (typeof window.ysdk.isAvailableMethod === "function") {
+						var ok = await window.ysdk.isAvailableMethod("leaderboards.setScore");
+						if (!ok) return;
+					}
+					await window.ysdk.leaderboards.setScore("score", Number(n) || 0);
+				} catch (e) {}
+			})();
+		};
+
+		window.pmYaEvent = function (name, json) {
+			var payload = {};
+			try { payload = json ? JSON.parse(json) : {}; } catch (e) { payload = {}; }
+			try { console.log("[pm]", name, payload); } catch (e) {}
+			if (typeof window.ym === "function" && window.pmYa && window.pmYa.metrika) {
+				try { window.ym(window.pmYa.metrika, "reachGoal", name, payload); } catch (e) {}
+			}
+		};
+
+		window.pmYaGetLeaders = function () {
+			if (!window.ysdk?.leaderboards) {
+				_cb("pmOnLeaders", "[]");
+				return;
+			}
+			(async function () {
+				try {
+					if (typeof window.ysdk.isAvailableMethod === "function") {
+						var ok = await window.ysdk.isAvailableMethod("leaderboards.getEntries");
+						if (!ok) {
+							_cb("pmOnLeaders", "[]");
+							return;
+						}
+					}
+					var res = await window.ysdk.leaderboards.getEntries("score", {
+						quantityTop: 10,
+						includeUser: true,
+						quantityAround: 2
+					});
+					var myId = "";
+					try { myId = String(window.ysdkPlayer?.getUniqueID?.() || ""); } catch (e) {}
+					var rows = (res.entries || []).map(function (e) {
+						var pid = String(e.player?.uniqueID || e.player?.uniqueId || "");
+						var isMe = !!(myId && pid && myId === pid);
+						if (!isMe && res.userRank && e.rank === res.userRank) isMe = true;
+						var name = (e.player && e.player.publicName) ? String(e.player.publicName).trim() : "";
+						if (!name) name = isMe ? "Вы" : "Игрок";
+						var avatar = "";
+						try {
+							if (e.player && typeof e.player.getAvatarSrc === "function") {
+								avatar = e.player.getAvatarSrc("medium") || "";
+							}
+						} catch (err) {}
+						return {
+							rank: e.rank,
+							score: e.score,
+							name: name,
+							me: isMe,
+							avatar_url: avatar
+						};
+					});
+					_cb("pmOnLeaders", JSON.stringify(rows));
+				} catch (e) {
+					_cb("pmOnLeaders", "[]");
+				}
+			})();
+		};
+
+		window.__initPuzzleManiaYandex = async function () {
+			try {
+				window.ysdk = await YaGames.init();
+				if (window.ysdk.environment?.i18n?.lang) {
+					window.pmYa.lang = window.ysdk.environment.i18n.lang;
+				}
+				if (window.ysdk.deviceInfo?.type) {
+					window.pmYa.device = window.ysdk.deviceInfo.type;
+				}
+				try {
+					var player = await window.ysdk.getPlayer({ scopes: false });
+					var authorized = !!(player && player.isAuthorized && player.isAuthorized());
+					if (authorized) {
+						try {
+							player = await window.ysdk.getPlayer({ scopes: true });
+						} catch (scopeErr) {}
+					}
+					_applyPlayer(player);
+				} catch (playerErr) {
+					window.ysdkPlayer = null;
+					window.pmYa.player = null;
+				}
+				if (window.pmOnYandexReady) window.pmOnYandexReady(JSON.stringify(_profile()));
+				try {
+					window.ysdk.on("game_api_pause", function () {
+						if (window.__pmAdLocked()) return;
+						window.__pmGameplayStarted = false;
+						_cb("pmOnVisibility", JSON.stringify({ hidden: true }));
+					});
+					window.ysdk.on("game_api_resume", function () {
+						if (window.__pmAdLocked()) return;
+						window.__pmGameplayStarted = true;
+						_cb("pmOnVisibility", JSON.stringify({ hidden: false }));
+					});
+				} catch (e) {}
+			} catch (err) {
+				console.warn("Yandex SDK", err);
+				if (window.pmOnYandexReady) window.pmOnYandexReady(JSON.stringify(_profile()));
+			}
+		};
+
+		try {
+			window.addEventListener("pagehide", window.__pmFlushSaveNow);
+			document.addEventListener("visibilitychange", function () {
+				if (document.hidden) window.__pmFlushSaveNow();
+			});
+		} catch (e) {}
+
+		if (window.YaGames) {
+			window.__initPuzzleManiaYandex();
+		} else if (window.pmOnYandexReady) {
+			window.pmOnYandexReady(JSON.stringify(_profile()));
+		}
+	</script>
+</head>
+<body>
+	<canvas id="canvas">
+		Your browser does not support the canvas tag.
+	</canvas>
+	<noscript>Your browser does not support JavaScript.</noscript>
+	<div id="status">
+		<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="index.png" alt="">
+		<progress id="status-progress"></progress>
+		<div id="status-notice"></div>
+	</div>
+	<script src="index.js"></script>
+	<script>
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":4034840,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4};
+const GODOT_THREADS_ENABLED = false;
+const engine = new Engine(GODOT_CONFIG);
+
+(function () {
+	const statusOverlay = document.getElementById('status');
+	const statusProgress = document.getElementById('status-progress');
+	const statusNotice = document.getElementById('status-notice');
+
+	let initializing = true;
+	let statusMode = '';
+
+	function setStatusMode(mode) {
+		if (statusMode === mode || !initializing) {
+			return;
+		}
+		if (mode === 'hidden') {
+			statusOverlay.remove();
+			initializing = false;
+			return;
+		}
+		statusOverlay.style.visibility = 'visible';
+		statusProgress.style.display = mode === 'progress' ? 'block' : 'none';
+		statusNotice.style.display = mode === 'notice' ? 'block' : 'none';
+		statusMode = mode;
+	}
+
+	function setStatusNotice(text) {
+		while (statusNotice.lastChild) {
+			statusNotice.removeChild(statusNotice.lastChild);
+		}
+		const lines = text.split('\n');
+		lines.forEach((line) => {
+			statusNotice.appendChild(document.createTextNode(line));
+			statusNotice.appendChild(document.createElement('br'));
+		});
+	}
+
+	function displayFailureNotice(err) {
+		console.error(err);
+		if (err instanceof Error) {
+			setStatusNotice(err.message);
+		} else if (typeof err === 'string') {
+			setStatusNotice(err);
+		} else {
+			setStatusNotice('An unknown error occurred.');
+		}
+		setStatusMode('notice');
+		initializing = false;
+	}
+
+	const missing = Engine.getMissingFeatures({
+		threads: GODOT_THREADS_ENABLED,
+	});
+
+	if (missing.length !== 0) {
+		if (GODOT_CONFIG['serviceWorker'] && GODOT_CONFIG['ensureCrossOriginIsolationHeaders'] && 'serviceWorker' in navigator) {
+			let serviceWorkerRegistrationPromise;
+			try {
+				serviceWorkerRegistrationPromise = navigator.serviceWorker.getRegistration();
+			} catch (err) {
+				serviceWorkerRegistrationPromise = Promise.reject(new Error('Service worker registration failed.'));
+			}
+			Promise.race([
+				serviceWorkerRegistrationPromise.then((registration) => {
+					if (registration != null) {
+						return Promise.reject(new Error('Service worker already exists.'));
+					}
+					return registration;
+				}).then(() => engine.installServiceWorker()),
+				new Promise((resolve) => {
+					setTimeout(() => resolve(), 2000);
+				}),
+			]).then(() => {
+				window.location.reload();
+			}).catch((err) => {
+				console.error('Error while registering service worker:', err);
+			});
+		} else {
+			const missingMsg = 'Error\nThe following features required to run Godot projects on the Web are missing:\n';
+			displayFailureNotice(missingMsg + missing.join('\n'));
+		}
+	} else {
+		setStatusMode('progress');
+		engine.startGame({
+			'onProgress': function (current, total) {
+				if (current > 0 && total > 0) {
+					statusProgress.value = current;
+					statusProgress.max = total;
+				} else {
+					statusProgress.removeAttribute('value');
+					statusProgress.removeAttribute('max');
+				}
+			},
+		}).then(() => {
+			setStatusMode('hidden');
+		}, displayFailureNotice);
+	}
+}());
+	</script>
+</body>
+</html>

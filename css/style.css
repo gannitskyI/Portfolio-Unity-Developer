@@ -1121,6 +1121,23 @@ body::before {
   background: #000;
 }
 
+.play-stage--portrait .play-stage__frame {
+  background: #e7cfa8;
+}
+
+.play-stage--portrait .play-stage__media {
+  display: flex;
+  justify-content: center;
+  background: #e7cfa8;
+}
+
+.play-stage__iframe--portrait {
+  width: min(100%, 430px);
+  height: min(78vh, 780px);
+  margin: 0 auto;
+  background: #e7cfa8;
+}
+
 .play-stage__hud {
   position: absolute;
   left: 0.8rem;
