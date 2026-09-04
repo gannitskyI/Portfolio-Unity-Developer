@@ -1069,14 +1069,14 @@ body::before {
 
 
 .project__content {
-  padding: 2.2rem 1.8rem 2.8rem;
+  padding: 2.4rem 1.9rem 3rem;
   display: grid;
-  gap: 1.7rem;
+  gap: 2.05rem;
 }
 
 .project__intro {
   display: grid;
-  gap: 0.85rem;
+  gap: 1rem;
 }
 
 .project__intro .eyebrow {
@@ -1356,14 +1356,15 @@ body::before {
 }
 
 .phone--portrait .phone__screen {
-  width: min(430px, calc(100vw - 52px), calc((92vh - 110px) * 0.48));
+  height: min(calc(100vh - 92px), 980px);
   aspect-ratio: 9 / 19.5;
-  height: auto;
+  width: auto;
+  max-width: calc(100vw - 36px);
 }
 
 .phone--landscape .phone__screen {
-  width: min(920px, calc(100vw - 48px));
-  height: min(68vh, 560px);
+  width: min(1100px, calc(100vw - 40px));
+  height: min(78vh, 640px);
 }
 
 .phone__chin {
@@ -1397,8 +1398,8 @@ body::before {
 
 .project__grid {
   display: grid;
-  gap: 1.8rem;
-  padding-top: 0.4rem;
+  gap: 2.15rem;
+  padding-top: 0.2rem;
 }
 
 .project__grid h3,
@@ -1600,7 +1601,9 @@ body.play-theater-open {
   }
 
   .phone--portrait .phone__screen {
-    width: min(calc(100vw - 28px), calc((100vh - 92px) * 0.5));
+    height: min(calc(100vh - 80px), 900px);
+    width: auto;
+    max-width: calc(100vw - 24px);
   }
 
   .phone--landscape .phone__screen {
