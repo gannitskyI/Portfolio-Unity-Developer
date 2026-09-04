@@ -1,75 +1,163 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Портфолио Unity Программиста</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07080b">
+  <title>Ilya Gannitsky — Unity / C# Game Developer</title>
+  <meta name="description" content="Unity and C# game developer specializing in WebGL, mobile and browser games.">
+  <meta name="author" content="Ilya Gannitsky">
+  <link rel="canonical" href="./">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Ilya Gannitsky — Unity / C# Game Developer">
+  <meta property="og:description" content="Unity and C# game developer specializing in WebGL, mobile and browser games.">
+  <meta property="og:image" content="assets/images/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Ilya Gannitsky — Unity / C# Game Developer">
+  <meta name="twitter:description" content="Unity and C# game developer specializing in WebGL, mobile and browser games.">
+  <meta name="twitter:image" content="assets/images/og.jpg">
+
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/icons/favicon.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
 </head>
 <body>
-    <!-- Плавающее меню навигации -->
-    <nav class="navbar">
-        <div class="logo">Unity Dev</div>
-        <ul class="nav-links">
-            <li><a href="#about">Обо мне</a></li>
-            <li><a href="#projects">Проекты</a></li>
-            <li><a href="#contact">Контакты</a></li>
-        </ul>
+  <a class="skip-link" href="#games">Skip to games</a>
+
+  <header class="nav" id="nav">
+    <a class="nav__brand" href="#home" data-scroll>
+      <span class="nav__mark" aria-hidden="true">IG</span>
+      <span class="nav__name" data-config="name">Ilya Gannitsky</span>
+    </a>
+    <nav class="nav__links" id="nav-links" aria-label="Primary">
+      <a href="#home" data-scroll>Home</a>
+      <a href="#games" data-scroll>Games</a>
+      <a href="#about" data-scroll>About</a>
+      <a href="#skills" data-scroll>Skills</a>
+      <a href="#experience" data-scroll>Experience</a>
+      <a href="#contact" data-scroll>Contact</a>
     </nav>
+    <button class="nav__toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">
+      <span></span><span></span>
+    </button>
+  </header>
 
-    <!-- Главная секция с параллакс эффектом -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Привет, я Unity Программист!</h1>
-            <p>Разрабатываю уникальные игры и механики.</p>
-            <a href="#projects" class="button">Посмотреть проекты</a>
+  <main>
+    <section class="hero" id="home">
+      <div class="hero__stage" aria-hidden="true">
+        <div class="hero__grid"></div>
+        <div class="hero__glow"></div>
+        <div class="hero__scan"></div>
+        <div class="hero__hud">
+          <span>SCENE // HERO</span>
+          <span data-hud-clock>00:00:00</span>
+          <span>UNITY / C# / WEBGL</span>
+          <span>VIEWPORT 16:9</span>
         </div>
+        <div class="hero__frame" aria-hidden="true">
+          <i></i><i></i><i></i><i></i>
+        </div>
+      </div>
+
+      <div class="hero__content">
+        <p class="eyebrow">Available for studios &amp; collaborations</p>
+        <h1 class="hero__title" aria-label="Ilya Gannitsky">
+          <span class="hero__name" data-config="name">Ilya Gannitsky</span>
+        </h1>
+        <p class="hero__role" data-config="role">Unity / C# Game Developer</p>
+        <p class="hero__tag" data-config="tagline">WebGL • Mobile • Gameplay • Game Systems</p>
+        <p class="hero__summary" data-config="summary">
+          Game developer focused on Unity, C# and WebGL development, creating polished gameplay experiences for browser and mobile platforms.
+        </p>
+        <div class="hero__cta">
+          <a class="btn btn--primary" href="#games" data-scroll>View my games</a>
+          <a class="btn btn--ghost" href="#contact" data-scroll>Contact me</a>
+        </div>
+      </div>
     </section>
 
-    <!-- Секция "Обо мне" -->
-    <section class="about" id="about">
-        <h2>Обо мне</h2>
-        <p>Меня зовут [Ваше Имя]. Я Unity-разработчик с опытом в создании игр с нуля, от идеи до реализации. Фокусируюсь на создании плавного и увлекательного игрового процесса.</p>
+    <section class="section" id="games">
+      <div class="section__head">
+        <p class="eyebrow">Selected work</p>
+        <h2>Games</h2>
+        <p class="section__lead">Shipped and in-progress titles. Filter by platform or genre.</p>
+      </div>
+
+      <div class="filters" id="filters" role="tablist" aria-label="Filter games">
+        <button class="filter is-active" data-filter="ALL" aria-pressed="true">All</button>
+        <button class="filter" data-filter="WEBGL" aria-pressed="false">WebGL</button>
+        <button class="filter" data-filter="MOBILE" aria-pressed="false">Mobile</button>
+        <button class="filter" data-filter="UNITY" aria-pressed="false">Unity</button>
+        <button class="filter" data-filter="CASUAL" aria-pressed="false">Casual</button>
+        <button class="filter" data-filter="ACTION" aria-pressed="false">Action</button>
+        <button class="filter" data-filter="OTHER" aria-pressed="false">Other</button>
+      </div>
+
+      <div class="games" id="games-grid"></div>
+      <p class="games__empty" id="games-empty" hidden>No games in this category yet.</p>
     </section>
 
-   <!-- Секция "Проекты" -->
-<section class="projects" id="projects">
-    <h2>Проекты</h2>
-    
-    <!-- Проект 1 -->
-    <div class="project">
-        <h3>Название игры 1</h3>
-        <p>Описание игры и особенности игрового процесса.</p>
-        <div class="video-container">
-            <video controls autoplay loop muted>
-    <source src="videos/gameplay1.mp4" type="video/mp4">
-    Ваш браузер не поддерживает видео.
-</video>
-
+    <section class="section" id="about">
+      <div class="about">
+        <div class="section__head">
+          <p class="eyebrow">Profile</p>
+          <h2>About me</h2>
         </div>
+        <p class="about__headline" data-config="about.headline"></p>
+        <p class="about__body" data-config="about.body"></p>
+        <ul class="about__focus" id="about-focus"></ul>
+        <div class="competencies" id="competencies"></div>
+      </div>
+    </section>
+
+    <section class="section" id="skills">
+      <div class="section__head">
+        <p class="eyebrow">Stack</p>
+        <h2>Skills</h2>
+      </div>
+      <div class="skills" id="skills-grid"></div>
+    </section>
+
+    <section class="section" id="experience">
+      <div class="section__head">
+        <p class="eyebrow">Track record</p>
+        <h2>Experience</h2>
+      </div>
+      <ol class="timeline" id="timeline"></ol>
+    </section>
+
+    <section class="section contact" id="contact">
+      <p class="eyebrow">Next step</p>
+      <h2>Let’s build something great</h2>
+      <p class="section__lead">Have a project, opportunity or just want to talk game development?</p>
+      <div class="contact__actions" id="contact-actions"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p><span data-config="name">Ilya Gannitsky</span> · Unity / C# · WebGL</p>
+    <p class="footer__copy">© <span id="year"></span> · Built to ship games</p>
+  </footer>
+
+  <div class="project" id="project" hidden>
+    <div class="project__panel" role="dialog" aria-modal="true" aria-labelledby="project-title">
+      <button class="project__close" id="project-close" aria-label="Close project">Close</button>
+      <div class="project__body" id="project-body"></div>
     </div>
+  </div>
 
-    <!-- Проект 2 (добавьте еще одно видео аналогично первому) -->
-    <div class="project">
-        <h3>Название игры 2</h3>
-        <p>Описание игры и особенности игрового процесса.</p>
-        <div class="video-container">
-            <video controls>
-                <source src="videos/gameplay2.mp4" type="video/mp4">
-                Ваш браузер не поддерживает видео.
-            </video>
-        </div>
-    </div>
-</section>
-
-
-    <!-- Секция "Контакты" -->
-    <section class="contact" id="contact">
-        <h2>Контакты</h2>
-        <p>Свяжитесь со мной по электронной почте: [ваш email]</p>
-    </section>
-
-    <!-- JavaScript для анимаций -->
-    <script src="script.js"></script>
+  <script src="data/config.js"></script>
+  <script src="data/games.js"></script>
+  <script src="js/games.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/project.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
