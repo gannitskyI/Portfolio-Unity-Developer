@@ -227,7 +227,7 @@ const Playable = (() => {
         class="play-stage__iframe"
         title="${escapeHtml(session.game.title)}"
         src="${escapeHtml(src)}"
-        allow="fullscreen; autoplay; gamepad; keyboard-map"
+        allow="autoplay; gamepad; keyboard-map"
         allowfullscreen
         loading="eager"
       ></iframe>
@@ -456,16 +456,22 @@ const Playable = (() => {
   function startKnight(session) {
     session.help.textContent = t("play.knightHint");
     const TILE = 36;
-    let map, player, enemies, coins, slash, wave, best;
+    let map, player, enemies, coins, slash, wave, best, iFrames;
 
     const carve = (cols, rows) => {
       const grid = Array.from({ length: rows }, () => Array(cols).fill(1));
       for (let y = 1; y < rows - 1; y += 1) {
         for (let x = 1; x < cols - 1; x += 1) {
-          grid[y][x] = Math.random() < 0.12 ? 1 : 0;
+          grid[y][x] = Math.random() < 0.1 ? 1 : 0;
         }
       }
-      grid[Math.floor(rows / 2)][Math.floor(cols / 2)] = 0;
+      const mx = Math.floor(cols / 2);
+      const my = Math.floor(rows / 2);
+      for (let y = my - 1; y <= my + 1; y += 1) {
+        for (let x = mx - 1; x <= mx + 1; x += 1) {
+          if (grid[y] && grid[y][x] !== undefined) grid[y][x] = 0;
+        }
+      }
       return grid;
     };
 
@@ -482,13 +488,16 @@ const Playable = (() => {
       const cols = map[0].length;
       const rows = map.length;
       const count = 3 + index * 2;
+      const minDist = Math.min(session.w, session.h) * 0.38;
       for (let i = 0; i < count; i += 1) {
         let x;
         let y;
+        let tries = 0;
         do {
           x = (1 + Math.random() * (cols - 2)) * TILE + TILE / 2;
           y = (1 + Math.random() * (rows - 2)) * TILE + TILE / 2;
-        } while (blocked(x, y) || Math.hypot(x - player.x, y - player.y) < 80);
+          tries += 1;
+        } while ((blocked(x, y) || Math.hypot(x - player.x, y - player.y) < minDist) && tries < 40);
         enemies.push({ x, y, hp: 2 + Math.floor(index / 2) });
       }
       for (let i = 0; i < 5; i += 1) {
@@ -516,6 +525,7 @@ const Playable = (() => {
       };
       slash = null;
       wave = 1;
+      iFrames = 1.6;
       spawnWave(1);
       session.hud.textContent = `${t("play.wave")} 1`;
     };
@@ -563,12 +573,17 @@ const Playable = (() => {
         const dx = player.x - enemy.x;
         const dy = player.y - enemy.y;
         const dist = Math.hypot(dx, dy) || 1;
-        enemy.x += (dx / dist) * 70 * dt;
-        enemy.y += (dy / dist) * 70 * dt;
-        if (dist < 22) {
-          player.hp -= dt * 0.8;
-        }
+        const nx = enemy.x + (dx / dist) * 70 * dt;
+        const ny = enemy.y + (dy / dist) * 70 * dt;
+        if (!blocked(nx, enemy.y)) enemy.x = nx;
+        if (!blocked(enemy.x, ny)) enemy.y = ny;
       });
+
+      iFrames = Math.max(0, iFrames - dt);
+      if (iFrames <= 0) {
+        const touching = enemies.some((enemy) => Math.hypot(enemy.x - player.x, enemy.y - player.y) < 22);
+        if (touching) player.hp -= dt * 0.7;
+      }
 
       coins = coins.filter((coin) => {
         if (Math.hypot(coin.x - player.x, coin.y - player.y) < 18) {
@@ -581,6 +596,7 @@ const Playable = (() => {
       if (enemies.length === 0 && player.hp > 0) {
         wave += 1;
         player.hp = Math.min(5, player.hp + 1);
+        iFrames = 1.2;
         spawnWave(wave);
       }
 
@@ -625,7 +641,7 @@ const Playable = (() => {
           ctx.arc(player.x, player.y, 40, slash.a - 0.8, slash.a + 0.8);
           ctx.stroke();
         }
-        ctx.fillStyle = "#d4b07a";
+        ctx.fillStyle = iFrames > 0 && Math.floor(iFrames * 8) % 2 === 0 ? "#f1ece3" : "#d4b07a";
         ctx.beginPath();
         ctx.arc(player.x, player.y, 11, 0, Math.PI * 2);
         ctx.fill();
