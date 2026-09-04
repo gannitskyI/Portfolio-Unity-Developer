@@ -51,7 +51,7 @@ const Playable = (() => {
         <div class="play-stage__overlay"></div>
       </div>
       <p class="play-stage__help"></p>
-      <div class="play-stage__touch" hidden>
+      <div class="play-stage__touch play-stage__touch--hidden">
         <div class="play-stick" data-stick>
           <span></span>
         </div>
@@ -85,7 +85,11 @@ const Playable = (() => {
     active = session;
 
     const isTouch = window.matchMedia("(pointer: coarse)").matches;
-    if (isTouch && game.play.type === "canvas") touch.hidden = false;
+    if (isTouch && game.play.type === "canvas") {
+      touch.classList.remove("play-stage__touch--hidden");
+    } else {
+      touch.classList.add("play-stage__touch--hidden");
+    }
 
     bindInput(session);
 
