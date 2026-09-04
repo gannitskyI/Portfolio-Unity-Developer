@@ -218,21 +218,29 @@ const Playable = (() => {
   }
 
   function setupEmbed(session) {
-    const src = session.game.play.src;
-    session.help.textContent = t("play.warHint");
+    const play = session.game.play || {};
+    const src = play.src;
+    const hintKey = play.hint || "play.warHint";
+    const portrait = play.orientation === "portrait";
+    session.help.textContent = t(hintKey);
     session.overlay.innerHTML = "";
     session.overlay.hidden = true;
+    if (portrait) session.wrap.classList.add("play-stage--portrait");
     session.media.innerHTML = `
       <iframe
-        class="play-stage__iframe"
+        class="play-stage__iframe${portrait ? " play-stage__iframe--portrait" : ""}"
         title="${escapeHtml(session.game.title)}"
         src="${escapeHtml(src)}"
-        allow="autoplay; gamepad; keyboard-map"
+        allow="autoplay; fullscreen; gamepad; keyboard-map"
         allowfullscreen
         loading="eager"
       ></iframe>
     `;
-    session.hud.textContent = session.game.title;
+    if (portrait) {
+      session.hud.hidden = true;
+    } else {
+      session.hud.textContent = session.game.title;
+    }
   }
 
   function setupCanvas(session) {

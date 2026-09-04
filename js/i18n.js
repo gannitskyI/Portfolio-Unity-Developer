@@ -70,7 +70,7 @@ const I18N = {
       features: "Features",
       screenshots: "Screenshots",
       prototype: "Playable prototype of the core loop — built for this site so you can try the mechanic instantly.",
-      embed: "Full Unity WebGL build, running on this page.",
+      embed: "Full WebGL build, running on this page.",
     },
     play: {
       start: "Play",
@@ -93,6 +93,7 @@ const I18N = {
       knightHint: "Clear the dungeon. WASD move, slash to attack.",
       pokerHint: "Survive the arena. Collect cards — better poker hands deal more damage.",
       warHint: "Unity WebGL survivor prototype. Click to focus the game, then play.",
+      lotkeHint: "Original Godot build. First load downloads the engine; then tap the game to play. Ads and Yandex login are stubbed here.",
     },
   },
   ru: {
@@ -166,7 +167,7 @@ const I18N = {
       features: "Особенности",
       screenshots: "Скриншоты",
       prototype: "Игровой прототип основного цикла — чтобы механику можно было попробовать сразу на сайте.",
-      embed: "Полная Unity WebGL-сборка, запущена на этой странице.",
+      embed: "Полная WebGL-сборка, запущена на этой странице.",
     },
     play: {
       start: "Играть",
@@ -189,6 +190,7 @@ const I18N = {
       knightHint: "Зачистите подземелье. WASD — движение, удар — атака.",
       pokerHint: "Выживите на арене. Собирайте карты: чем сильнее покерная комбинация, тем выше урон.",
       warHint: "Unity WebGL-прототип выживалки. Кликните, чтобы сфокусировать игру.",
+      lotkeHint: "Оригинальная сборка на Godot. Первый запуск качает движок, затем нажмите на игру. Реклама и вход Яндекса здесь заглушки.",
     },
   },
 };
