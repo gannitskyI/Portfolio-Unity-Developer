@@ -570,6 +570,7 @@ const Playable = (() => {
       if (keys.action && player.cool <= 0) {
         player.cool = 0.35;
         slash = { t: 0.18, a: player.facing };
+        const before = enemies.length;
         enemies.forEach((enemy) => {
           const dx = enemy.x - player.x;
           const dy = enemy.y - player.y;
@@ -580,7 +581,7 @@ const Playable = (() => {
           if (dist < 54 && diff < 0.9) enemy.hp -= 1;
         });
         enemies = enemies.filter((enemy) => enemy.hp > 0);
-        if (enemies.length === 0) waveCleared = true;
+        if (before > 0 && enemies.length === 0) waveCleared = true;
       }
       if (slash) {
         slash.t -= dt;
