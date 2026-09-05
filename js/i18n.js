@@ -94,6 +94,8 @@ const I18N = {
       pokerHint: "Survive the arena. Collect cards — better poker hands deal more damage.",
       warHint: "Unity WebGL survivor prototype. Click to focus the game, then play.",
       lotkeHint: "Original Godot build in a phone frame. First load downloads the engine. Ads and Yandex login are stubbed here.",
+      bricksHint: "Block puzzle in a phone frame. First load downloads the engine. Ads and platform login are stubbed here.",
+      pekarnyaHint: "Bakery sim in a phone frame. First load downloads the engine. Ads and platform login are stubbed here.",
     },
   },
   ru: {
@@ -191,6 +193,8 @@ const I18N = {
       pokerHint: "Выживите на арене. Собирайте карты: чем сильнее покерная комбинация, тем выше урон.",
       warHint: "Unity WebGL-прототип выживалки. Кликните, чтобы сфокусировать игру.",
       lotkeHint: "Оригинальная сборка Godot в рамке телефона. Первый запуск качает движок. Реклама и вход Яндекса здесь заглушки.",
+      bricksHint: "Блочный пазл в рамке телефона. Первый запуск качает движок. Реклама и вход платформы здесь заглушки.",
+      pekarnyaHint: "Симулятор пекарни в рамке телефона. Первый запуск качает движок. Реклама и вход платформы здесь заглушки.",
     },
   },
 };
